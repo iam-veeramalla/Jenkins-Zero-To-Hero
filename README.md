@@ -3,6 +3,7 @@
 YouTube Video ->
 https://www.youtube.com/watch?v=zZfhAXfBvVA&list=RDCMUCnnQ3ybuyFdzvgv2Ky5jnAA&index=1
 
+
 ![Screenshot 2023-02-01 at 5 46 14 PM](https://user-images.githubusercontent.com/43399466/216040281-6c8b89c3-8c22-4620-ad1c-8edd78eb31ae.png)
 
 Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
