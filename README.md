@@ -1,12 +1,15 @@
 # Jenkins-Zero-To-Hero
-Install Jenkins, configure Docker as slave, set up cicd, deploy applications to k8s and much more.
+Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
 
-To start with we will create 2 ec2 instances on AWS where we will use one instance as Jenkins Master and the other one as Jenkins Slave.
+## AWS EC2 Instance
 
-```
-```
+- Go to AWS Console
+- Instances(running)
+- Launch instances
 
-On the first instance, Install Jenkins.
+<img width="994" alt="Screenshot 2023-02-01 at 12 37 45 PM" src="https://user-images.githubusercontent.com/43399466/215974891-196abfe9-ace0-407b-abd2-adcffe218e3f.png">
+
+Install Jenkins.
 
 Pre-Requisites:
  - Java (JDK)
@@ -38,8 +41,15 @@ sudo apt-get update
 sudo apt-get install jenkins
 ```
 
-By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. But in this case, you should be able to
-acccess the Jenkins from your browser as we have configured the inbound traffic rules to allow `All Trrafic` during the creation of instance.
+By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as show below.
+
+- EC2 > Instances > Click on <Instance-ID>
+- In the bottom tabs -> Click on Security
+- Security groups
+- Add inbound traffic rules as shown in the image (you can just allow TCP 8080 as well, in my case, I allowed `All traffic`).
+
+<img width="1187" alt="Screenshot 2023-02-01 at 12 42 01 PM" src="https://user-images.githubusercontent.com/43399466/215975712-2fc569cb-9d76-49b4-9345-d8b62187aa22.png">
+
 
 Login to Jenkins using the below URL:
 
@@ -68,3 +78,48 @@ Create First Admin User or Skip the step [If you want to use this Jenkins instan
 <img width="990" alt="Screenshot 2023-02-01 at 11 02 09 AM" src="https://user-images.githubusercontent.com/43399466/215959757-403246c8-e739-4103-9265-6bdab418013e.png">
 
 Jenkins Installation is Successful. You can now starting using the Jenkins 
+
+<img width="990" alt="Screenshot 2023-02-01 at 11 14 13 AM" src="https://user-images.githubusercontent.com/43399466/215961440-3f13f82b-61a2-4117-88bc-0da265a67fa7.png">
+
+Install the Docker Pipeline plugin in Jenkins:
+
+   - Log in to Jenkins.
+   - Go to Manage Jenkins > Manage Plugins.
+   - In the Available tab, search for "Docker Pipeline".
+   - Select the plugin and click the Install button.
+   - Restart Jenkins after the plugin is installed.
+   
+<img width="1392" alt="Screenshot 2023-02-01 at 12 17 02 PM" src="https://user-images.githubusercontent.com/43399466/215973898-7c366525-15db-4876-bd71-49522ecb267d.png">
+
+Wait for the Jenkins to be restarted.
+
+
+## Docker Slave Configuration
+
+Run the below command to Install Docker
+
+```
+sudo apt update
+sudo apt install docker.io
+```
+ 
+Grant Jenkins user and Ubuntu user permission to docker deamon.
+
+```
+sudo su - 
+usermod -aG docker jenkins
+usermod -aG docker ubuntu
+systemctl restart docker
+```
+
+Once you are done with the above steps, it is better to restart Jenkins.
+
+```
+http://<ec2-instance-public-ip>:8080/restart
+```
+
+The docker agent configuration is now successful.
+
+
+
+
