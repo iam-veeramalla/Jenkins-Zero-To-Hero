@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: todo-app
+spec:
+  containers:
+  - name: todo-app
+    image: abhishekf5/todoapp:v1
+    ports:
+    - containerPort: 8000

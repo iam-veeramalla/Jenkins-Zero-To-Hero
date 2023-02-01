@@ -1,0 +1,18 @@
+.page-header {
+  margin-top: 30px;
+}
+
+.fa-trash-alt {
+  color: red;
+  float: right;
+  cursor: pointer;
+}
+
+.todo-complete {
+  text-decoration: line-through;
+}
+
+.todo-status-checkbox {
+  cursor: pointer;
+  margin-right: 10px;
+}
