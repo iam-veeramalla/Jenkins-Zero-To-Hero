@@ -128,5 +128,8 @@ http://<ec2-instance-public-ip>:8080/restart
 The docker agent configuration is now successful.
 
 
+Additional references for installing jenkins on ubuntu:-  https://biswajitblogs.hashnode.dev/how-to-setup-jenkins-in-ubuntu-ec2-instance
+
+
 
 
