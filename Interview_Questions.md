@@ -21,22 +21,30 @@ Q: What are the different ways to trigger jenkins pipelines ?
 
 A: This can be done in multiple ways,
    To briefly explain about the different options,
+   ```
      - Poll SCM: Jenkins can periodically check the repository for changes and automatically build if changes are detected. 
                  This can be configured in the "Build Triggers" section of a job.
+                 
      - Build Triggers: Jenkins can be configured to use the Git plugin, which allows you to specify a Git repository and branch to build. 
                  The plugin can be configured to automatically build when changes are pushed to the repository.
+                 
      - Webhooks: A webhook can be created in GitHub to notify Jenkins when changes are pushed to the repository. 
                  Jenkins can then automatically build the updated code. This can be set up in the "Build Triggers" section of a job and in the GitHub repository settings.
-
+   ```
 Q: How to backup Jenkins ?
 
 A: Backing up Jenkins is a very easy process, there are multiple default and configured files and folders in Jenkins that you might want to backup.
-    - Configuration: The `~/.jenkins` folder. You can use a tool like rsync to backup the entire directory to another location.
+```  
+  - Configuration: The `~/.jenkins` folder. You can use a tool like rsync to backup the entire directory to another location.
+  
     - Plugins: Backup the plugins installed in Jenkins by copying the plugins directory located in JENKINS_HOME/plugins to another location.
+    
     - Jobs: Backup the Jenkins jobs by copying the jobs directory located in JENKINS_HOME/jobs to another location.
+    
     - User Content: If you have added any custom content, such as build artifacts, scripts, or job configurations, to the Jenkins environment, make sure to backup those as well.
+    
     - Database Backup: If you are using a database to store information such as build results, you will need to backup the database separately. This typically involves using a database backup tool, such as mysqldump for MySQL, to export the data to another location.
-
+```
 One can schedule the backups to occur regularly, such as daily or weekly, to ensure that you always have a recent copy of your Jenkins environment available. You can use tools such as cron or Windows Task Scheduler to automate the backup process.
 
 Q: How do you store/secure/handle secrets in Jenkins ?
