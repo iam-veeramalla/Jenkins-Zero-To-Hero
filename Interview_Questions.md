@@ -1,6 +1,7 @@
 ## NOTE: While I have prepared all the questions, to provide better answers in a detailed way, the summary provided below is the collection of my knowledge and information from various sources like Medium, Stack Overflow, ChatGPT.
 
 Q: Can you explain the CICD process in your current project ? or Can you talk about any CICD process that you have implemented ?
+
 A: In the current project we use the following tools orchestrated with Jenkins to achieve CICD.
    - Maven, Sonar, AppScan, ArgoCD, and Kubernetes
    
@@ -17,6 +18,7 @@ A: In the current project we use the following tools orchestrated with Jenkins t
    
 
 Q: What are the different ways to trigger jenkins pipelines ?
+
 A: This can be done in multiple ways,
    To briefly explain about the different options,
      - Poll SCM: Jenkins can periodically check the repository for changes and automatically build if changes are detected. 
@@ -27,6 +29,7 @@ A: This can be done in multiple ways,
                  Jenkins can then automatically build the updated code. This can be set up in the "Build Triggers" section of a job and in the GitHub repository settings.
 
 Q: How to backup Jenkins ?
+
 A: Backing up Jenkins is a very easy process, there are multiple default and configured files and folders in Jenkins that you might want to backup.
     - Configuration: The `~/.jenkins` folder. You can use a tool like rsync to backup the entire directory to another location.
     - Plugins: Backup the plugins installed in Jenkins by copying the plugins directory located in JENKINS_HOME/plugins to another location.
@@ -37,6 +40,7 @@ A: Backing up Jenkins is a very easy process, there are multiple default and con
 One can schedule the backups to occur regularly, such as daily or weekly, to ensure that you always have a recent copy of your Jenkins environment available. You can use tools such as cron or Windows Task Scheduler to automate the backup process.
 
 Q: How do you store/secure/handle secrets in Jenkins ?
+
 A: Again, there are multiple ways to achieve this, 
    Let me give you a brief explanation of all the posible options.
    
@@ -46,9 +50,11 @@ A: Again, there are multiple ways to achieve this,
    - Third-party Secret Management Tools: Jenkins can also be integrated with third-party secret management tools such as AWS Secrets Manager, Google Cloud Key Management Service, and Azure Key Vault.
 
 Q: What is latest version of Jenkins or which version of Jenkins are you using ?
+
 A: This is a very simple question interviewers ask to understand if you are actually using Jenkins day-to-day, so always be prepared for this.
 
 Q: What is shared modules in Jenkins ?
+
 A: Shared modules in Jenkins refer to a collection of reusable code and resources that can be shared across multiple Jenkins jobs. This allows for easier maintenance, reduced duplication, and improved consistency across multiple build processes.
    For example, shared modules can be used in cases like:
         - Libraries: Custom Java libraries, shell scripts, and other resources that can be reused across multiple jobs.
@@ -57,6 +63,7 @@ A: Shared modules in Jenkins refer to a collection of reusable code and resource
         - Global Variables: Shared global variables can be defined and used across multiple jobs, making it easier to manage common build parameters such as version numbers, artifact repositories, and environment variables.
 
 Q: can you use Jenkins to build applications with multiple programming languages using different agents in different stages ?
+
 A: Yes, Jenkins can be used to build applications with multiple programming languages by using different build agents in different stages of the build process.
 
 Jenkins supports multiple build agents, which can be used to run build jobs on different platforms and with different configurations. By using different agents in different stages of the build process, you can build applications with multiple programming languages and ensure that the appropriate tools and libraries are available for each language.
@@ -68,6 +75,7 @@ Jenkins also provides a wide range of plugins that can be used to support multip
 Overall, Jenkins is a flexible and powerful tool that can be used to build applications with multiple programming languages and support different stages of the build process.
 
 Q: How to setup auto-scaling group for Jenkins in AWS ?
+
 A: Here is a high-level overview of how to set up an autoscaling group for Jenkins in Amazon Web Services (AWS):
 
     - Launch EC2 instances: Create an Amazon Elastic Compute Cloud (EC2) instance with the desired configuration and install Jenkins on it. This instance will be used as the base image for the autoscaling group.
@@ -81,9 +89,11 @@ A: Here is a high-level overview of how to set up an autoscaling group for Jenki
  By using an autoscaling group for Jenkins, you can ensure that you have the appropriate number of instances available to handle the load on your build processes, and that new instances can be added or removed automatically as needed. This helps to ensure the reliability and scalability of your Jenkins environment.
 
 Q: How to add a new worker node in Jenkins ?
+
 A: Log into the Jenkins master and navigate to Manage Jenkins > Manage Nodes > New Node. Enter a name for the new node and select Permanent Agent. Configure SSH and click on Launch.
 
 Q: How to add a new plugin in Jenkins ?
+
 A: Using the CLI, 
    `java -jar jenkins-cli.jar install-plugin <PLUGIN_NAME>`
   
@@ -92,10 +102,12 @@ A: Using the CLI,
    - Click on the "Manage Plugins" link.
 
 Q: What is JNLP and why is it used in Jenkins ?
+
 A: In Jenkins, JNLP is used to allow agents (also known as "slave nodes") to be launched and managed remotely by the Jenkins master instance. This allows Jenkins to distribute build tasks to multiple agents, providing scalability and improving performance.
    When a Jenkins agent is launched using JNLP, it connects to the Jenkins master and receives build tasks, which it then executes. The results of the build are then sent back to the master and displayed in the Jenkins user interface.
 
 Q: What are some of the common plugins that you use in Jenkins ?
+
 A: Be prepared for answer, you need to have atleast 3-4 on top of your head, so that interview feels you use jenkins on a day-to-day basis.
 
 
