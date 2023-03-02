@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                // perform build steps here
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                // perform testing steps here
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // perform deployment steps here
+                sh 'kubectl apply -f deployment.yaml'
+            }
+        }
+    }
+}
