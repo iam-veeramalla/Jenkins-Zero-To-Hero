@@ -1,0 +1,30 @@
+pipeline {
+  agent {
+    docker {
+      image 'maven:3.8.1-adoptopenjdk-11'
+      args '-v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+    }
+  }
+  stages {
+    stage('Build and Test') {
+      steps {
+        sh 'cd java-maven-sonar-argocd-helm-k8s/sprint-boot-app'
+        sh 'mvn clean package' // build the project and create a JAR file
+      }
+    }
+    stage('Build and Push Docker Image') {
+      environment {
+        DOCKER_REGISTRY = 'docker.io' // Docker Hub registry
+        DOCKER_IMAGE_NAME = 'ultimate-jenkins-cicd-pipeline' // name of the Docker image to build and push
+        DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}" // tag the Docker image with the build number
+      }
+      steps {
+        sh 'docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .' // build the Docker image
+        withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY" // log in to Docker Hub
+          sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" // push the Docker image to Docker Hub
+        }
+      }
+    }
+  }
+}
