@@ -27,6 +27,7 @@ pipeline {
         DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}" // tag the Docker image with the build number
       }
       steps {
+        sh 'apk add docker'
         sh 'docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .' // build the Docker image
         withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
           sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY" // log in to Docker Hub
