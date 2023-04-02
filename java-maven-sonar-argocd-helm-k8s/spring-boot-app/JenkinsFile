@@ -15,9 +15,9 @@ pipeline {
     }
     stage('Static Code Analysis') {
       steps {
-        sh 'ls -ltr'
-        // Run Sonar
-        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar'
+        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN'
+        }
       }
     }
     stage('Build and Push Docker Image') {
