@@ -13,6 +13,13 @@ pipeline {
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
+    stage('Static Code Analysis') {
+      steps {
+        sh 'ls -ltr'
+        // Run Sonar
+        sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar'
+      }
+    }
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_REGISTRY = 'docker.io' // Docker Hub registry
