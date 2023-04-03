@@ -1,11 +1,16 @@
 pipeline {
   agent {
     docker {
-      image 'maven:3.8.1-adoptopenjdk-11'
-      args '-v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+      image 'abhishekf5/maven-abhishek-docker-agent:v1'
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
   stages {
+    stage('Checkout') {
+      steps {
+        git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+      }
+    }
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
@@ -14,24 +19,30 @@ pipeline {
       }
     }
     stage('Static Code Analysis') {
+      environment {
+        SONAR_URL = "http://3.88.23.32:9000"
+        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+      }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url="http://52.204.8.193:9000"'
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url="${SONAR_URL}"'
         }
       }
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_REGISTRY = 'docker.io' // Docker Hub registry
-        DOCKER_IMAGE_NAME = 'ultimate-jenkins-cicd-pipeline' // name of the Docker image to build and push
-        DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}" // tag the Docker image with the build number
+        DOCKER_IMAGE = "ultimate-cicd:${BUILD_NUMBER}"
+        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
-        sh 'sudo apt install docker -y'
-        sh 'docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .' // build the Docker image
-        withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY" // log in to Docker Hub
-          sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" // push the Docker image to Docker Hub
+        script {
+            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+                dockerImage.push()
+            }
         }
       }
     }
