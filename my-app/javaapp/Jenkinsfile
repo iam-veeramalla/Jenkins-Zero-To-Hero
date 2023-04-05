@@ -6,7 +6,7 @@ pipeline {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
       steps {
-        sh 'mvn clean install'
+        sh 'mvn /var/lib/jenkins/workspace/pipeline/my-app/javaapp/pom.xml clean install'
       }
     }
   }
