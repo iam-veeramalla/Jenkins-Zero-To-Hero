@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('Back-end') {
+    stage('Back-end-one') {
       agent {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
