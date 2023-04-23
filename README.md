@@ -30,8 +30,8 @@ Pre-Requisites:
 Install Java
 
 ```
-sudo apt update
-sudo apt install openjdk-11-jre
+sudo apt update 
+sudo apt install openjdk-11-jre -y
 ```
 
 Verify Java is Installed
