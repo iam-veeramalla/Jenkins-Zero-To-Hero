@@ -8,5 +8,10 @@ pipeline {
         sh 'node --version'
       }
     }
+    stage('createfile') {
+      steps {
+        writeFile file: 'touch $pwd/raj.txt', text: 'this is test from jenkins pipeline'
+      }
+    }
   }
 }
