@@ -7,6 +7,10 @@ pipeline {
       }
       steps {
         sh 'mvn --version'
+        git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero'
+        dir('multi-stage-multi-agent/src') {
+            sh 'java HelloWorld.java'
+        }
       }
     }
     stage('Front-end') {
@@ -15,6 +19,10 @@ pipeline {
       }
       steps {
         sh 'node --version'
+        git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero'
+        dir('multi-stage-multi-agent/src') {
+            sh 'node helloWorld.js'
+        }
       }
     }
   }
