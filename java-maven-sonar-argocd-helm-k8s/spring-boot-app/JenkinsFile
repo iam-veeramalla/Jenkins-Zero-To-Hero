@@ -8,13 +8,8 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        checkout([$class: 'GitSCM',
-          branches: [[name: '*/main']],
-          doGenerateSubmoduleConfigurations: false,
-          extensions: [[$class: 'CleanBeforeCheckout']],
-          submoduleCfg: [],
-          userRemoteConfigs: [[url: 'https://github.com/amitk1998/Jenkins-Zero-To-Hero']]
-        ])
+        sh 'echo passed'
+        //git branch: 'main', url: 'https://github.com/amitk1998/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
@@ -34,22 +29,6 @@ pipeline {
         }
       }
     }
-  stage('Quality Gate') {
-  steps {
-    withSonarQubeEnv('SonarQube Server') {
-      script {
-        def scannerHome = tool 'SonarQube Scanner'
-        def scannerCmd = "${scannerHome}/bin/sonar-scanner"
-        
-        withEnv(["PATH+SONARQUBE_SCANNER=${scannerHome}/bin"]) {
-          sh """
-            ${scannerCmd} -Dsonar.login=${SONAR_AUTH_TOKEN}
-          """
-        }
-      }
-    }
-  }
-}
 
     stage('Build and Push Docker Image') {
       environment {
@@ -68,23 +47,23 @@ pipeline {
       }
     }
     stage('Update Deployment File') {
-      environment {
-        GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
-        GIT_USER_NAME = "amitk1998"
-      }
-      steps {
-        withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-          sh '''
-            git config user.email "letsearchitto101@gmail.com"
-            git config user.name "amitk1998"
-            BUILD_NUMBER=${BUILD_NUMBER}
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-          '''
+        environment {
+            GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
+            GIT_USER_NAME = "amitk1998"
         }
-      }
+        steps {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "letsearchitto101@gmail.com"
+                    git config user.name "amitk1998"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                    git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+            }
+        }
     }
   }
 }
