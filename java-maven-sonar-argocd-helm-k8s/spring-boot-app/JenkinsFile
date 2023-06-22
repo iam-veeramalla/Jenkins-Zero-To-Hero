@@ -28,22 +28,35 @@ pipeline {
         }
       }
     }
-stage('Quality Gates') {
-  steps {
-    // Run SonarQube analysis and generate reports
-    
-    // Wait for the quality gate to pass or fail
-    def qualityGate = waitForQualityGate()
-    
-    // Check the status of the quality gate
-    if (qualityGate.status == 'OK') {
-      echo "Quality gate passed."
-    } else {
-      error "Quality gate failed."
-    }
-  }
-}
+stage("Quality Gates") {
+    steps {
+        // Run SonarQube analysis and generate reports
 
+        // Wait for the quality gate to pass or fail
+        SonarScanner.MsBuildSqScannerBuilder sqScannerBuilder = new SonarScanner.MsBuildSqScannerBuilder();
+        sqScannerBuilder.installationName("SonarQube");
+        sqScannerBuilder.projectKey("your_project_key");
+        sqScannerBuilder.projectName("Your Project Name");
+        sqScannerBuilder.projectVersion("1.0");
+        sqScannerBuilder.targets("src");
+
+        sqScannerBuilder.additionalProperties(new LinkedHashMap<String, Object>() {{
+            put("sonar.login", "your_sonarqube_token");
+        }});
+
+        sqScannerBuilder.scan();
+
+        // Wait for the quality gate to complete and get the status
+        QualityGate qualityGate = waitForQualityGate();
+
+        // Check the status of the quality gate
+        if (qualityGate.getStatus() == QualityGate.Status.OK) {
+            System.out.println("Quality gate passed.");
+        } else {
+            throw new Exception("Quality gate failed.");
+        }
+    }
+}
   
     stage('Build and Push Docker Image') {
       environment {
