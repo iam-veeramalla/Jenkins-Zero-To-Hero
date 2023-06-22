@@ -28,6 +28,11 @@ pipeline {
         }
       }
     }
+stage("Quality gate") {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+}
   
     stage('Build and Push Docker Image') {
       environment {
