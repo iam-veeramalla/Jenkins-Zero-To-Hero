@@ -28,11 +28,22 @@ pipeline {
         }
       }
     }
-stage("Quality gate") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
+stage('Quality Gates') {
+  steps {
+    // Run SonarQube analysis and generate reports
+    
+    // Wait for the quality gate to pass or fail
+    def qualityGate = waitForQualityGate()
+    
+    // Check the status of the quality gate
+    if (qualityGate.status == 'OK') {
+      echo "Quality gate passed."
+    } else {
+      error "Quality gate failed."
+    }
+  }
 }
+
   
     stage('Build and Push Docker Image') {
       environment {
