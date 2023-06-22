@@ -29,15 +29,7 @@ pipeline {
         }
       }
     }
-    stage('Quality Gate') {
-      steps {
-        script {
-          withSonarQubeEnv('SonarQube Server') {
-            sh 'sonar-scanner -Dsonar.login=$SONAR_AUTH_TOKEN'
-          }
-        }
-      }
-    }
+
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "amitk101/ultimate-cicd:${BUILD_NUMBER}"
