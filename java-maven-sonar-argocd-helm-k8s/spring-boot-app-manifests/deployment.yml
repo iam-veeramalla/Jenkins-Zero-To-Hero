@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: sprint-boot-app
-        image: pushpasaparapu/ultimate-cicd:16
+        image: pushpasaparapu/ultimate-cicd:springboot:replaceimagetag
         ports:
         - containerPort: 8080
