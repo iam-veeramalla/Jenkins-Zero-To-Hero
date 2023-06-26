@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', credentialsId: 'git-jen', url: 'https://github.com/Pushpalathasaparapu/Jenkins-Zero-To-Hero.git'
+        //git branch: 'pushpa', credentialsId: 'git-jen', url: 'https://github.com/Pushpalathasaparapu/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://3.95.11.85:9000"
+        SONAR_URL = "http://3.88.110.182:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'Sonarqube_token', variable: 'SONAR_AUTH_TOKEN')]) {
