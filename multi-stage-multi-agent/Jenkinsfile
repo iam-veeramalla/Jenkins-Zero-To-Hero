@@ -14,7 +14,7 @@ pipeline {
         docker { image 'nginx:1.25.1-alpine-slim' }
       }
       steps {
-        sh 'nginx --v'
+        sh 'nginx -v'
       }
     }
   }
