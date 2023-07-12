@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+        //git branch: 'main', url: 'https://github.com/susmitha2601/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://18.117.97.84:9000"
+        SONAR_URL = "http://18.188.105.116:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarcube', variable: 'SONAR_AUTH_TOKEN')]) {
