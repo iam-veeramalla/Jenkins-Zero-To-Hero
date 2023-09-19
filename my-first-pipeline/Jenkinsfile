@@ -10,7 +10,7 @@ pipeline {
     }
     stage('Print hello') {
       steps {
-        sh 'Hello my First pipeline'
+        Echo 'Hello my First pipeline'
       }
     }
   }
