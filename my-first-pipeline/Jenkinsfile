@@ -9,4 +9,11 @@ pipeline {
       }
     }
   }
+  stages {
+    stage('print hellow') {
+      steps {
+        sh 'Echo "Hellow world"'
+      }
+    }
+}
 }
