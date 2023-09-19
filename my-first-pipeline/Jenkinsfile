@@ -1,4 +1,8 @@
 pipeline {
+  def branchName = "${env.BRANCH_NAME}"
+  if(branchName == 'main'){
+  ...
+}
   agent {
     docker { image 'node:15-alpine' }
   }
