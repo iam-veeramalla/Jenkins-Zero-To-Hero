@@ -8,12 +8,10 @@ pipeline {
         sh 'node --version'
       }
     }
-  }
-  stages {
-    stage('print hellow') {
+    stage('Print hello') {
       steps {
-        sh 'Echo "Hellow world"'
+        sh 'Echo "Hello my First pipeline"'
       }
     }
-}
+  }
 }
