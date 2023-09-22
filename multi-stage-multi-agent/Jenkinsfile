@@ -7,6 +7,12 @@ pipeline {
       }
       steps {
         sh 'mvn --version'
+
+        // Adding our Java code "Hello World"
+
+        sh 'echo "public class HelloSir { public static void main(String[] args) { System.out.println(\\"Hello Abhisekh Sir. Thank you for Everything.\\"); } }" > HelloSir.java'
+        sh 'javac HelloSir.java'
+        sh 'java HelloSir'
       }
     }
     stage('Front-end') {
