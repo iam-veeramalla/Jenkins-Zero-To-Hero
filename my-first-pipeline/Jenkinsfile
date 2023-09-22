@@ -1,10 +1,25 @@
-pipeline {
-  agent {
-    docker { image 'node:16-alpine' }
-  }
-  stages {
-    stage('Test') {
-      steps {
+pipeline{
+  agent none
+  stages{
+    stage('Back-end'){
+      agent{
+        docker{image 'maven:3.8.1-adoptopenjdk-11'}
+      }
+      steps{
+        sh 'mvn --version'
+
+        //Adding our java code "Hello World"
+
+        sh 'echo "public class HelloSir{ public static void main(String[] args){System.out.println(\\"Hello Abhisekh Sir. Thank you for Everything.\\");}}"> HelloSir.java'
+        sh 'javac HelloSir.java'
+        sh 'java HelloSir'
+      }
+    }
+    stage('Front-end'){
+      agent{
+        docker{image 'node:16-alpine'}
+      }
+      steps{
         sh 'node --version'
       }
     }
