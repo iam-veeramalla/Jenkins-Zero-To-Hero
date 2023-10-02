@@ -7,7 +7,7 @@ pipeline {
       }
       steps {
         sh 'java --version '
-        sh 'multi-stage-multi-agent/HelloWorld.java'
+        sh 'java multi-stage-multi-agent/HelloWorld.java'
       }
     }
     stage('Front-end') {
