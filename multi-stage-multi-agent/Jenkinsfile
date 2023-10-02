@@ -6,7 +6,8 @@ pipeline {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
       steps {
-        sh 'javac hello.java '
+        sh 'java --version '
+        sh 'javac multi-stage-multi-agent/hello.java '
       }
     }
     stage('Front-end') {
