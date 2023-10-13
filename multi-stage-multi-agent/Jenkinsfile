@@ -17,13 +17,19 @@ pipeline {
         sh 'node --version'
       }
     }
+    stage('docker login') {
+      steps {
+        scripts {
+          sh "docker login -u gowda0921 -p Dai@2023!"
+        }
+      }
+    }
     stage('DB') {
       agent {
         docker { image 'mys:16-alpine'  }
-  }
+      }
       steps { 
         sh 'node --version'
       }
-}
-  }
+    }
 }
