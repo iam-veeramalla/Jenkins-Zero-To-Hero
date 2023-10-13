@@ -19,7 +19,7 @@ pipeline {
     }
     stage('DB') {
       agent {
-        docker { image 'sql'  }
+        docker { image 'mys:16-alpine'  }
   }
       steps { 
         sh 'node --version'
