@@ -32,4 +32,5 @@ pipeline {
         sh 'node --version'
       }
     }
+  }
 }
