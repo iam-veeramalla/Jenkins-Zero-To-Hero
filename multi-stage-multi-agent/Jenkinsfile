@@ -26,10 +26,10 @@ pipeline {
     }
     stage('DB') {
       agent {
-        docker { image 'mysql'  }
+        docker { image 'mysql:latest'  }
       }
       steps { 
-        sh 'node --version'
+        sh 'Select * from xyz'
       }
     }
   }
