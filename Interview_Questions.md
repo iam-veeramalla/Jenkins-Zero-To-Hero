@@ -136,4 +136,90 @@ Q: What are some of the common plugins that you use in Jenkins ?
 
 A: Be prepared for answer, you need to have atleast 3-4 on top of your head, so that interview feels you use jenkins on a day-to-day basis.
 
+Jenkins Pipeline 
+    How to create a jenkins pipeline job ?
+	1. We can add pipeline configuration in 2 ways 
+		a. We write all the configuration inside the pipeline job in job ui only.
+		b. We can write all the configuration in a file called Jenkinsfile and we can add that 
+		   from a SCM/Version control 
+	2. We are using only declarative pipeline type in our company.
 
+
+    What are the ways to create a jenkins Job ?  
+    What is a Jenkinsfile ?
+
+    Jenkinsfile	
+	- It is the file in which we write all our job configuration in groovy.
+	- In our company we are using declarative pipeline in Jenkinsfile and we are maintaining 
+	  Jenkinsfile through git.	
+
+    Types of pipeline jobs 
+	Jenkins pipeline uses Groovy scripting which 
+	is one of the java based scripting language. 
+	
+	2 types of pipeline job 
+	    1. Scripted pipeline 
+		- Traditional way of defining pipeline Job 
+ 		- Most of the configuration we need to define manually. 
+		- All the code will be inside node block.
+			node {
+				......
+			}
+	
+ 	    2. Declarative Pipeline  	
+		- New way of defining pipeline job.
+		- Most of the configuration are pre-defined.					 			   
+		- All the code will be inside pipeline block.
+			pipeline {
+				......
+			}
+
+ Agent
+	- An agent is a declarative used to define the execution method for pipeline stages.
+	- agent is the one which tell stages to execute on which node and its executor.
+	- Agent can be specified at two levels 
+				a. pipeline level 
+				b. Stage level
+			
+	Types of agent 
+		any 
+			- This is the default agent, If I wont specify any agent this will be considered.
+			- Runs the pipeline stages on any available node executor.
+			
+		none 
+			-  To define executor for each and every stage declare agent as none at pipeline level.
+			-  Using this we specify jenkins that agent is controlled at each stage level.
+			-  Devining agent at stage level is mandatory. 
+				
+		label 
+			- we can define agent as label at pipeline to run all the stages of pipeline
+			  on a perticular node with label.	
+
+post actions
+
+post block contains additional actions to be performed on completion of the pipeline execution. 
+It can contain one or many of the following conditional blocks – always, changed, aborted, failure, success, unstable etc.
+
+	post block conditions
+	
+		always – run this post block irrespective of the pipeline execution status
+		changed – run this post block only if the pipeline’s execution status is different from the previous build run. 
+					E.g., the build failed at an earlier run & ran successfully this time.
+		aborted – if the build is aborted in the middle of the run. Usually due to manual stopping of the build run
+		failure – if the build status is failure.
+		success – if the build ran successfully.
+		unstable – build is successful but not healthy. 
+		    E.g. On a particular build run, test cases ran successfully, but test coverage % is less than expected, 
+				 then the build can be marked as unstable	      
+
+To change the default port of Jenkins (8080)
+	- In debian (ubuntu): /etc/default/jenkins
+	- In RHEL/CentOS: /etc/sysconfig/jenkins
+	
+	change HTTP_PORT=8080 value to your preffered port number 
+	Then restart the jenkins service
+
+Assignment - Make jenkins user a sudo user (root privilages)
+		sudo visudo 
+		
+	
