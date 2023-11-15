@@ -35,7 +35,7 @@ pipeline {
             environment {
                 DOCKER_IMAGE = "5b5anuroop/spring-app:${BUILD_NUMBER}"
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
-                DOCKER_USERNAME = 'your_docker_username' // Replace with your Docker Hub username
+                DOCKER_USERNAME = '5b5anuroop' // Replace with your Docker Hub username
             }
             steps {
                 script {
