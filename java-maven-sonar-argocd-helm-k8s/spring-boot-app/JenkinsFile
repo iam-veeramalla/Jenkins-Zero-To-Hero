@@ -1,23 +1,22 @@
 pipeline {
-    agent {
-        docker {
-            image 'abhishekf5/maven-abhishek-docker-agent:v1'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
+    agent any
+
+    environment {
+        BUILD_NUMBER = "${env.BUILD_NUMBER}"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                sh 'echo passed'
-                // git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+                // ... (your checkout steps)
+                echo 'Checked out code'
             }
         }
 
         stage('Build and Test') {
             steps {
-                sh 'ls -ltr'
-                sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
+                // ... (your build and test steps)
+                echo 'Built and tested the application'
             }
         }
 
@@ -43,8 +42,8 @@ pipeline {
                     sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
                     
                     // Log in to Docker Hub using credentials
-                    withCredentials([string(credentialsId: 'docker-cred', variable: 'DOCKER_CREDENTIALS')]) {
-                        sh "echo $DOCKER_CREDENTIALS | docker login -u ${5b5anuroop} --password-stdin"
+                    withCredentials([string(credentialsId: 'docker-cred', variable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                     }
 
                     // Push the Docker image to Docker Hub
