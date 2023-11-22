@@ -1,11 +1,14 @@
 pipeline {
   agent {
-    docker { image 'node:16-alpine' }
+    docker { image 'nginx' }
   }
   stages {
     stage('Test') {
       steps {
-        sh 'node --version'
+        sh 'nginx -v'
+        sh 'docker run --name Test -p 80:80 -d nginx'
+        sh 'sleep 600'
+        sh 'docker stop Test'
       }
     }
   }
