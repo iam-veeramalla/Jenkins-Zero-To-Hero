@@ -7,7 +7,7 @@ pipeline {
       steps {
         sh 'nginx -v'
         sh 'docker run --name Test -p 80:80 -d nginx'
-        sh 'sleep 300'
+        sh 'sleep 600'
         sh 'docker stop Test'
       }
     }
