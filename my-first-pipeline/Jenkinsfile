@@ -1,11 +1,11 @@
 pipeline {
   agent {
-    docker { image 'nginx: latest' }
+    docker { image 'nginx' }
   }
   stages {
     stage('Test') {
       steps {
-        sh 'nginx --version'
+        sh 'nginx -v'
         sh 'docker run --name Test -p 80:80 -d nginx'
         sh 'sleep 300'
         sh 'docker stop Test'
