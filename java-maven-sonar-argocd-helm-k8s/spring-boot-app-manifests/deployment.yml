@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: spring-boot-app
-        image: mydevopsacr1.azurecr.io/ultimate-cicd:10
+        image: mydevopsacr1.azurecr.io/ultimate-cicd:11
         ports:
         - containerPort: 8080
