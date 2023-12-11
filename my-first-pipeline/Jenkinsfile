@@ -3,7 +3,7 @@ pipeline {
     docker { image 'node:16-alpine' }
   }
   stages {
-    stage('Test') {
+    stage('bult') {
       steps {
         sh 'node --version'
       }
