@@ -10,12 +10,13 @@ pipeline {
             steps {
                 checkout scm
       }
+        }
     stage('Build'){
             steps{
-                sh 'pwd'
-                sh 'mvn clean package'
+                dir('./java-maven-sonar-argocd-helm-k8s/spring-boot-app'){
+                    sh 'mvn clean package'
+                }
             }
         }
     }
   }
-}
