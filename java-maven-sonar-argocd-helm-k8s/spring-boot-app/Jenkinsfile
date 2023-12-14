@@ -67,7 +67,7 @@ pipeline {
                     dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests') {
                     sh 'cat deployment.yml'
                     sh 'git config --global user.email "abyvarghese2007@gmail.com"'
-                    sh 'git config --global user.name "abyvarghese1990"'
+                    sh 'git config --global user.name "avargh879local"'
                     sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
                     sh 'git add .'
                     sh 'git commit -m "updated image tag"'
