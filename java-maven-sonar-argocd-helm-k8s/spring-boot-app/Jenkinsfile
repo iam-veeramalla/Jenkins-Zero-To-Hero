@@ -60,6 +60,22 @@ pipeline {
                 }
             }
         }
+        stage('update manifest'){
+            
+            steps {
+                script {
+                    withCredentials{usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')}
+                    dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests') {
+                    sh 'cat deployment.yaml'
+                    sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
+                    sh 'git add .'
+                    sh 'git commit -m "updated image tag"'
+                    sh 'git push origin main'   
+                    sh
+                    }
+                }
+            }
+        }
     //     stage('Build and Push Docker Image') {
     //           environment {
     //             DOCKER_IMAGE = "abyvarghese1990/ultimate-cicd-new:${BUILD_NUMBER}"
