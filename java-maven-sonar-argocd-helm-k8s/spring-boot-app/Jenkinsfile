@@ -37,9 +37,11 @@ pipeline {
             steps {
                     script {withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
                         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
-                        sh "docker login -u ${username} -p ${password}"
-                        sh "docker tag spring-boot-app ${username}/spring-boot-app"
-                        sh "docker push ${username}/spring-boot-app"
+                        sh '''
+                        "docker login -u ${username} -p ${password}"
+                        "docker tag spring-boot-app ${username}/spring-boot-app"
+                        "docker push ${username}/spring-boot-app"
+                        '''
                         }
                     }
              }
