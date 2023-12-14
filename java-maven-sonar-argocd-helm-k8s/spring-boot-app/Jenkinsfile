@@ -22,6 +22,17 @@ pipeline {
                     }
             }
         }
+        stage('sonarqube') {
+            steps {
+                    script {
+                        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
+                            dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
+                            sh "mvn sonar:sonar -Dsonar.projectKey=abyvarghese_spring-boot-app -Dsonar.host.url=http://3.148.109.81:9000 -Dsonar.login=${SONARQUBE_TOKEN}"
+                            }
+                    }
+            }
+          }
+        }
         stage('Docker image build') {
             steps {
                     script {
