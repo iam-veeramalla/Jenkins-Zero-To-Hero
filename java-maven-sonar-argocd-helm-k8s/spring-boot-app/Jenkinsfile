@@ -27,7 +27,7 @@ pipeline {
                     script {
                         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
                         sh "docker build -t spring-boot-app:${BUILD_NUMBER} ."
-                        sh "docker tag spring-boot-app:${BUILD_NUMBER} abyvarghese/spring-boot-app:${BUILD_NUMBER}"
+                        sh "docker tag spring-boot-app:${BUILD_NUMBER} abyvarghese1990/spring-boot-app:${BUILD_NUMBER}"
                         sh 'docker images'
                         }
                     }
