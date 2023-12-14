@@ -36,10 +36,10 @@ pipeline {
             }
         }
         stage('Docker image push') {
-            steps {
                 environment{
                     DockerImage = "abyvarghese/spring-boot-app:${BUILDNUMBER}"
                 }
+                steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
                         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
