@@ -60,22 +60,24 @@ pipeline {
                 }
             }
         }
-        stage('update manifest'){ 
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                    dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests') {
-                    sh 'cat deployment.yml'
-                    sh 'git config --global user.email "abyvarghese2007@gmail.com"'
-                    sh 'git config --global user.name "avargh879local"'
-                    sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
-                    sh 'git add .'
-                    sh 'git commit -m "updated image tag"'
-                    sh 'git push https://avargh879local:${GIT_PASSWORD}@github.com/avargh879local/Jenkins-Zero-To-Hero.git HEAD:main'  
-                    }
-                }
+        stage('Update Deployment File') {
+        environment {
+            GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
+            GIT_USER_NAME = "avargh879local"
+        }
+        steps {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "abyvarghese2007@mail.com"
+                    git config user.name "avargh879local"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
+                    git add .
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
             }
-            }
-        } 
+        }
+    }
     }
 }
