@@ -27,7 +27,7 @@ pipeline {
                     script {
                         dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
                         sh "docker build -t spring-boot-app:{BUILDNUMBER} ."
-                        sh "docker tag spring-boot-app:{BUILDNUMBER} abyvarghese/spring-boot-app:{BUILDNUMBER}"
+                        sh "docker tag spring-boot-app:${BUILDNUMBER} abyvarghese/spring-boot-app:${BUILDNUMBER}"
                         sh 'docker images'
                         }
                     }
@@ -38,7 +38,7 @@ pipeline {
         stage('Docker image push') {
             steps {
                 environment{
-                    DockerImage = "abyvarghese/spring-boot-app:{BUILDNUMBER}"
+                    DockerImage = "abyvarghese/spring-boot-app:${BUILDNUMBER}"
                 }
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
