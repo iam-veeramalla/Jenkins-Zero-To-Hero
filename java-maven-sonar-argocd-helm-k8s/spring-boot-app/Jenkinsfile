@@ -71,8 +71,7 @@ pipeline {
                     sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
                     sh 'git add .'
                     sh 'git commit -m "updated image tag"'
-                    sh 'git push origin main'   
-                    sh
+                    sh 'git push https://github.com/avargh879local/Jenkins-Zero-To-Hero.git main'   
                     }
                 }
             }
