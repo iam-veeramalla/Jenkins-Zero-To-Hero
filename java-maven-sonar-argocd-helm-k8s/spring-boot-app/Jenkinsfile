@@ -63,7 +63,7 @@ pipeline {
         stage('update manifest'){ 
             steps {
                 script {
-                    withCredentials{usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')}{
+                    withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                     dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests') {
                     sh 'cat deployment.yaml'
                     sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
