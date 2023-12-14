@@ -71,8 +71,7 @@ pipeline {
                     sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
                     sh 'git add .'
                     sh 'git commit -m "updated image tag"'
-                    sh 'git remote add myremote https://avargh879local:${GIT_PASSWORD}@github.com/${GIT_USER_NAME}/Jenkins-Zero-To-Hero.git'
-                    sh 'git push myremote HEAD:main'  
+                    sh 'git push https://avargh879local:${GIT_PASSWORD}@github.com/${GIT_USER_NAME}/Jenkins-Zero-To-Hero.git HEAD:main'  
                     }
                 }
             }
