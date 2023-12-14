@@ -22,20 +22,48 @@ pipeline {
                     }
             }
         }
-        stage('Build and Push Docker Image') {
-              environment {
-                DOCKER_IMAGE = "abyvarghese1990/ultimate-cicd-new:${BUILD_NUMBER}"
-                REGISTRY_CREDENTIALS = credentials('dockerhub')
-              }
-              steps {
+        stage('Docker image build') {
+            steps {
+                    script {
+                        dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
+                        sh "docker build -t spring-boot-app:{BUILDNUMBER} ."
+                        sh "docker tag spring-boot-app:{BUILDNUMBER} abyvarghese/spring-boot-app:{BUILDNUMBER}"
+                        sh 'docker images'
+                        }
+                    }
+
+                
+            }
+        }
+        stage('Docker image push') {
+            steps {
+                environment{
+                    DockerImage = "abyvarghese/spring-boot-app:{BUILDNUMBER}"
+                }
                 script {
-                    sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
-                    def dockerImage = docker.image("${DOCKER_IMAGE}")
-                    docker.withRegistry('https://index.docker.io/v1/', "dockerhub") {
-                        dockerImage.push()
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
+                        sh "docker push ${DockerImage}"
+                        }
                     }
                 }
-              }
-    }
+            }
+        }
+    //     stage('Build and Push Docker Image') {
+    //           environment {
+    //             DOCKER_IMAGE = "abyvarghese1990/ultimate-cicd-new:${BUILD_NUMBER}"
+    //             REGISTRY_CREDENTIALS = credentials('dockerhub')
+    //           }
+    //           steps {
+    //             script {
+    //                 sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+    //                 def dockerImage = docker.image("${DOCKER_IMAGE}")
+    //                 docker.withRegistry('https://index.docker.io/v1/', "dockerhub") {
+    //                     dockerImage.push()
+    //                 }
+    //             }
+    //           }
+    // }
+    
     }
 }
