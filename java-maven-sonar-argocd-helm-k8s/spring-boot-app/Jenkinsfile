@@ -66,9 +66,9 @@ pipeline {
             GIT_USER_NAME = "avargh879local"
         }
         steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+            withCredentials([string(credentialsId: 'git', variable: 'GITHUB_TOKEN')]) {
                 sh '''
-                    git config user.email "abyvarghese2007@mail.com"
+                    git config user.email "abyvarghese2007@gmail.com"
                     git config user.name "avargh879local"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml
