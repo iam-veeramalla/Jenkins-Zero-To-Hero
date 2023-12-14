@@ -22,31 +22,20 @@ pipeline {
                     }
             }
         }
-                stage('Docker image build') {
-            steps {
-                    script {
-                        dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app') {
-                        sh "docker build -t spring-boot-app ."
-                        }
-                    }
-
-                
-            }
-        }
-        stage('Docker image push') {
-            steps {
+        stage('Build and Push Docker Image') {
+              environment {
+                DOCKER_IMAGE = "abyvarghese1990/ultimate-cicd-new:${BUILD_NUMBER}"
+                REGISTRY_CREDENTIALS = credentials('docker-cred')
+              }
+              steps {
                 script {
-                    // Define the Docker registry credentials
-                    def registry = docker.registry(credentialsId: 'dockerhub', url: 'https://index.docker.io/v1/')
-
-                    // push the Docker image
-                    docker.withRegistry(registry) {
-                        def ImageName = "${registry}/spring-boot-app:{BUILDNUMBER}" // Customize the image name as needed
-                        def Image = docker.image(ImageName)
-                        Image.push()
+                    sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+                    def dockerImage = docker.image("${DOCKER_IMAGE}")
+                    docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+                        dockerImage.push()
                     }
                 }
-            }
-        }
+              }
+    }
     }
 }
