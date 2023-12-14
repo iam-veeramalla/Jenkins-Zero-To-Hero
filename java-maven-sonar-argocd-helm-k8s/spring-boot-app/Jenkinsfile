@@ -65,7 +65,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                     dir('java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests') {
-                    sh 'cat deployment.yaml'
+                    sh 'cat deployment.yml'
                     sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
                     sh 'git add .'
                     sh 'git commit -m "updated image tag"'
