@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Docker image push') {
                 environment{
-                    DockerImage = "abyvarghese/spring-boot-app:${BUILD_NUMBER}"
+                    DockerImage = "abyvarghese1990/spring-boot-app:${BUILD_NUMBER}"
                 }
                 steps {
                 script {
