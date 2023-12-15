@@ -2,5 +2,5 @@ projectKey=abyvarghese_spring-boot-app
 serverUrl=http://3.148.109.81:9000
 serverVersion=9.4.0.54424
 dashboardUrl=http://3.148.109.81:9000/dashboard?id=abyvarghese_spring-boot-app
-ceTaskId=AYxqeF2Ur_vuanxyQo1H
-ceTaskUrl=http://3.148.109.81:9000/api/ce/task?id=AYxqeF2Ur_vuanxyQo1H
+ceTaskId=AYxvQHnpr_vuanxyQo1I
+ceTaskUrl=http://3.148.109.81:9000/api/ce/task?id=AYxvQHnpr_vuanxyQo1I
