@@ -8,9 +8,11 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passing yupsie'
         
-      }
+=======
+        sh 'echo passed'
+        }
+
     }
     stage('Build and Test') {
       steps {
