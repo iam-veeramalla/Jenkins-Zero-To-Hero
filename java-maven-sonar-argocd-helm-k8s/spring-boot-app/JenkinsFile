@@ -9,7 +9,6 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passing yupsie'
-        git url: 'https://github.com/ravi593singh/DevOpsCICD.git'
         
       }
     }
