@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passed'
+        sh 'echo pass'
         git branch: 'main', url: 'https://github.com/ravi593singh/DevOpsCICD.git',
         credentialsId: 'github_tokens'
       }
