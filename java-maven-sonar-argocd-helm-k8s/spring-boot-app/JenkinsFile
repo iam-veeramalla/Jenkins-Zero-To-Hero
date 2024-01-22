@@ -9,8 +9,8 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo pass'
-        git url: 'https://github.com/ravi593singh/DevOpsCICD.git',
-        credentialsId: 'github'
+        git url: 'https://github.com/ravi593singh/DevOpsCICD.git'
+        
       }
     }
     stage('Build and Test') {
