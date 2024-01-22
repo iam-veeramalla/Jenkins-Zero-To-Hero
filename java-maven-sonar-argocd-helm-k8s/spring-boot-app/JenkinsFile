@@ -8,8 +8,13 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passed 1'
+=======
+        
+=======
+        sh 'echo passed'
+
         }
+
     }
     stage('Build and Test') {
       steps {
