@@ -16,7 +16,7 @@ pipeline {
         }
 
     }
-    stage('Build and Test') {
+    stage('Build & Test') {
       steps {
         sh 'ls -ltr'
         // build the project and create a JAR file
