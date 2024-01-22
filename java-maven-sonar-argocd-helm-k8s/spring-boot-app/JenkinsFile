@@ -10,7 +10,7 @@ pipeline {
       steps {
         sh 'echo pass'
         git branch: 'main', url: 'https://github.com/ravi593singh/DevOpsCICD.git',
-        credentialsId: 'github_tokens'
+        credentialsId: 'github'
       }
     }
     stage('Build and Test') {
