@@ -1,0 +1,26 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:latest' // Use the Maven image which already has Java installed
+            args '-v /your/host/maven/repository:/root/.m2/repository' // Optional: Mount Maven repository to cache dependencies
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package' // Build the Java project using Maven
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test' // Run tests if any
+            }
+        }
+        stage('Run') {
+            steps {
+                sh 'java -version' // Check Java version
+                sh 'java -cp target/your-java-program.jar YourMainClass' // Replace with your actual Java program command
+            }
+        }
+    }
+}
