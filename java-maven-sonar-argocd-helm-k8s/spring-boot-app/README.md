@@ -60,8 +60,15 @@ chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
 chown -R sonarqube:sonarqube /home/sonarqube/sonarqube-9.4.0.54424
 cd sonarqube-9.4.0.54424/bin/linux-x86-64/
 ./sonar.sh start
+
+
 ```
+or download by 
+
+docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 
 Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
+
+
 
 
