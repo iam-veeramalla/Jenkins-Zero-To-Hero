@@ -3,10 +3,10 @@ pipeline {
   stages {
     stage('Backend') {
       agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
+        docker { image 'node:16-alpine' }
       }
       steps {
-        sh 'mvn --version'
+        sh 'node --version'
       }
     }
     stage('Frontend') {
