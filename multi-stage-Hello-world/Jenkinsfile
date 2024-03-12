@@ -1,50 +1,47 @@
 pipeline {
-    agent any
+    agent none
     
     stages {
-        stage('Build and Run Node.js') {
+        stage('Back-end') {
+            agent {
+                docker { 
+                    image 'maven:3.8.1-adoptopenjdk-11'
+                }
+            }
             steps {
                 script {
-                    // Node.js
-                    // Run Node.js application in a Docker container
-                    docker.image('node:latest').inside('-u root') {
-                        // Navigate to the correct directory
-                        dir('/var/lib/jenkins/workspace/Multi-stage-Hello_world/nodejs') {
-                            // Verify the presence of package.json
-                            sh 'ls package.json || echo "package.json not found"'
-                            
-                            // Install dependencies if package.json exists
-                            sh 'if [ -f package.json ]; then npm install; fi'
-                            
-                            // Run the Node.js application if dependencies are installed
-                            sh 'if [ -f package.json ]; then node app.js; fi'
-                        }
+                    // Assuming your backend code is in the 'backend' directory
+                    dir('backend') {
+                        // Run Maven command or any backend build steps
+                        sh 'mvn --version'
                     }
                 }
             }
         }
-    }
-}
-
-pipeline {
-    agent any
-    
-    stages {
-        stage('Build and Run Python') {
+        
+        stage('Front-end') {
+            agent {
+                docker { 
+                    image 'node:16-alpine'
+                }
+            }
             steps {
                 script {
-                    // Python
-                    // Run Python script in a Docker container
-                    docker.image('python:latest').inside('-u root') {
-                        // Navigate to the correct directory
-                        dir('/var/lib/jenkins/workspace/Multi-stage-Hello_world/python') {
-                            // Verify the presence of hello_world.py
-                            sh 'ls hello_world.py || echo "hello_world.py not found"'
-                            
-                            // Run the Python script if it exists
-                            sh 'if [ -f hello_world.py ]; then python hello_world.py; fi'
-                        }
+                    // Assuming your frontend code is in the 'frontend' directory
+                    dir('frontend') {
+                        // Run Node.js command or any frontend build steps
+                        sh 'node --version'
                     }
+                }
+            }
+        }
+        
+        stage('Python') {
+            agent any
+            steps {
+                script {
+                    // Assuming your Python script is named 'hello_world.py' and located in the root directory
+                    sh 'python hello_world.py'
                 }
             }
         }
