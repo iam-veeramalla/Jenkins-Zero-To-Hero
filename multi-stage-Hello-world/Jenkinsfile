@@ -15,7 +15,12 @@ pipeline {
                         // Run Maven command or any backend build steps
                         sh 'mvn --version'
                         // Print "Hello, World!" for backend
-                        echo 'Hello, World! from backend'
+                        public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World! from Java");
+    }
+}
+
                     }
                 }
             }
@@ -34,7 +39,7 @@ pipeline {
                         // Run Node.js command or any frontend build steps
                         sh 'node --version'
                         // Print "Hello, World!" for frontend
-                        echo 'Hello, World! from frontend'
+                       console.log('Hello, World! from Node.js');
                     }
                 }
             }
