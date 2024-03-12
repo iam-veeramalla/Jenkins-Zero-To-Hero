@@ -2,6 +2,31 @@ pipeline {
     agent none
     
     stages {
+        stage('Create Applications') {
+            agent any
+            steps {
+                script {
+                    // Create Java Hello World Application
+                    sh '''
+                        cat <<EOF > backend/HelloWorld.java
+                        public class HelloWorld {
+                            public static void main(String[] args) {
+                                System.out.println("Hello, World! from Java");
+                            }
+                        }
+                        EOF
+                    '''
+                    
+                    // Create Node.js Hello World Application
+                    sh '''
+                        cat <<EOF > frontend/app.js
+                        console.log('Hello, World! from Node.js');
+                        EOF
+                    '''
+                }
+            }
+        }
+        
         stage('Back-end') {
             agent {
                 docker { 
@@ -10,17 +35,10 @@ pipeline {
             }
             steps {
                 script {
-                    // Assuming your backend code is in the 'backend' directory
+                    // Compile and run the Java application
                     dir('backend') {
-                        // Run Maven command or any backend build steps
-                        sh 'mvn --version'
-                        // Print "Hello, World!" for backend
-                        public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World! from Java");
-    }
-}
-
+                        sh 'javac HelloWorld.java'
+                        sh 'java HelloWorld'
                     }
                 }
             }
@@ -34,12 +52,9 @@ pipeline {
             }
             steps {
                 script {
-                    // Assuming your frontend code is in the 'frontend' directory
+                    // Run the Node.js application
                     dir('frontend') {
-                        // Run Node.js command or any frontend build steps
-                        sh 'node --version'
-                        // Print "Hello, World!" for frontend
-                       console.log('Hello, World! from Node.js');
+                        sh 'node app.js'
                     }
                 }
             }
