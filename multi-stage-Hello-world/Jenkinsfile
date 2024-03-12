@@ -8,35 +8,16 @@ pipeline {
                     // Node.js
                     // Run Node.js application in a Docker container
                     docker.image('node:latest').inside('-u root') {
-                        // Assuming nodejs directory contains the Node.js application files
-                        dir('nodejs') {
-                            // Checkout Node.js code from repository
-                            checkout scm
+                        // Navigate to the correct directory
+                        dir('/var/lib/jenkins/workspace/Multi-stage-Hello_world/nodejs') {
+                            // Verify the presence of package.json
+                            sh 'ls package.json || echo "package.json not found"'
                             
-                            // Install dependencies
-                            sh 'npm install'
+                            // Install dependencies if package.json exists
+                            sh 'if [ -f package.json ]; then npm install; fi'
                             
-                            // Run the Node.js application
-                            sh 'node app.js'
-                        }
-                    }
-                }
-            }
-        }
-        
-        stage('Build and Run Python') {
-            steps {
-                script {
-                    // Python
-                    // Run Python script in a Docker container
-                    docker.image('python:latest').inside('-u root') {
-                        // Assuming python directory contains the Python application files
-                        dir('python') {
-                            // Checkout Python code from repository
-                            checkout scm
-                            
-                            // Run the Python script
-                            sh 'python hello_world.py'
+                            // Run the Node.js application if dependencies are installed
+                            sh 'if [ -f package.json ]; then node app.js; fi'
                         }
                     }
                 }
@@ -45,3 +26,27 @@ pipeline {
     }
 }
 
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build and Run Python') {
+            steps {
+                script {
+                    // Python
+                    // Run Python script in a Docker container
+                    docker.image('python:latest').inside('-u root') {
+                        // Navigate to the correct directory
+                        dir('/var/lib/jenkins/workspace/Multi-stage-Hello_world/python') {
+                            // Verify the presence of hello_world.py
+                            sh 'ls hello_world.py || echo "hello_world.py not found"'
+                            
+                            // Run the Python script if it exists
+                            sh 'if [ -f hello_world.py ]; then python hello_world.py; fi'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
