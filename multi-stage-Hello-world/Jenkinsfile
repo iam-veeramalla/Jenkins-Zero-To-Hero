@@ -6,6 +6,9 @@ pipeline {
             agent any
             steps {
                 script {
+                    // Create backend directory
+                    sh 'mkdir -p backend'
+                    
                     // Create Java Hello World Application
                     sh '''
                         cat <<EOF > backend/HelloWorld.java
@@ -14,14 +17,17 @@ pipeline {
                                 System.out.println("Hello, World! from Java");
                             }
                         }
-                        EOF
+EOF
                     '''
+                    
+                    // Create frontend directory
+                    sh 'mkdir -p frontend'
                     
                     // Create Node.js Hello World Application
                     sh '''
                         cat <<EOF > frontend/app.js
                         console.log('Hello, World! from Node.js');
-                        EOF
+EOF
                     '''
                 }
             }
