@@ -14,6 +14,8 @@ pipeline {
                     dir('backend') {
                         // Run Maven command or any backend build steps
                         sh 'mvn --version'
+                        // Print "Hello, World!" for backend
+                        echo 'Hello, World! from backend'
                     }
                 }
             }
@@ -31,17 +33,9 @@ pipeline {
                     dir('frontend') {
                         // Run Node.js command or any frontend build steps
                         sh 'node --version'
+                        // Print "Hello, World!" for frontend
+                        echo 'Hello, World! from frontend'
                     }
-                }
-            }
-        }
-        
-        stage('Python') {
-            agent any
-            steps {
-                script {
-                    // Assuming your Python script is named 'hello_world.py' and located in the root directory
-                    sh 'python hello_world.py'
                 }
             }
         }
