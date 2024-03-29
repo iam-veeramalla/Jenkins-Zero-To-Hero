@@ -8,9 +8,9 @@ pipeline {
       steps {
         script{
 	// compile java code
-        sh 'javac D:\jenkins\Jenkins-Zero-To-Hero\multi-stage-multi-agent\hello_world.java '
+        sh 'javac D:/jenkins/Jenkins-Zero-To-Hero/multi-stage-multi-agent/hello_world.java '
   // run java application
-        sh 'java D:\jenkins\Jenkins-Zero-To-Hero\multi-stage-multi-agent\hello_world.java'
+        sh 'java D:/jenkins/Jenkins-Zero-To-Hero/multi-stage-multi-agent/hello_world.java'
         }      
       }	
     }
