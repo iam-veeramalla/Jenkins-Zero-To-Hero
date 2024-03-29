@@ -6,10 +6,12 @@ pipeline {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
       steps {
+        script{
 	// compile java code
         sh 'javac hello_world.java'
   // run java application
         sh 'java hello_world.java'
+        }      
       }	
     }
     stage('Front-end') {
@@ -17,6 +19,7 @@ pipeline {
         docker { image 'node:16-alpine' }
       }
       steps {
+        script{
 	// run node app
         sh 'node hello.js'
       }
