@@ -8,7 +8,7 @@ pipeline {
       steps {
         script{
 	// compile java code
-        sh 'pwd'
+        sh 'cd multi-stage-multi-agent/'
         sh 'javac hello_world.java '
   // run java application
         sh 'java hello_world.java'
