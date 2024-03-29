@@ -8,9 +8,7 @@ pipeline {
       steps {
 	// compile java code
         sh 'javac hello_world.java'
-      }
-      steps {
-        // run java application
+  // run java application
         sh 'java hello_world.java'
       }	
     }
