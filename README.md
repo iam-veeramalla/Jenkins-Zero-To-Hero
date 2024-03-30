@@ -123,6 +123,13 @@ usermod -aG docker ubuntu
 systemctl restart docker
 ```
 
+
+### To prevent pipeline builer failure (/var/run/docker.sock: connect: permission denied) due to permission issue on below file.
+```
+sudo chmod 666 /var/run/docker.sock
+```
+
+
 Once you are done with the above steps, it is better to restart Jenkins.
 
 ```
