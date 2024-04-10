@@ -31,8 +31,8 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+        DOCKER_IMAGE = "maven:3.9.3-eclipse-temurin-17:${BUILD_NUMBER}"
+        DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('DockerCred')
       }
       steps {
@@ -51,7 +51,7 @@ pipeline {
             GIT_USER_NAME = "William-eng"
         }
         steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+            withCredentials([string(credentialsId: 'GithubSecr', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                     git config user.email "williamtijesuni@gmail.com"
                     git config user.name "William-eng"
