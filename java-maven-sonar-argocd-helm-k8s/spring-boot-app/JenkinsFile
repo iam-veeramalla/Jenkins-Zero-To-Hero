@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-     image 'willywan/first-image'
+     image 'abhishekf5/maven-abhishek-docker-agent'
      args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
     }
   }
@@ -24,14 +24,14 @@ pipeline {
         SONAR_URL = "http://192.16.1.53:9000/"
       }
       steps {
-        withCredentials([string(credentialsId: 'SonarTok', variable: 'SONAR_AUTH_TOKEN')]) {
+        withCredentials([string(credentialsId: 'Secret text', variable: 'SONAR_AUTH_TOKEN')]) {
           sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
         }
       }
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "willywan/first-image:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "abhishekf5/maven-abhishek-docker-agent:${BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('DockerCred')
       }
