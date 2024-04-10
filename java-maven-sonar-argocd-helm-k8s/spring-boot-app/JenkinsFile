@@ -1,15 +1,15 @@
 pipeline {
   agent {
     docker {
-     image 'maven'
-     //args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
+     image 'mabhishekf5/maven-abhishek-docker-agent:v1'
+     args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
     }
   }
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/William-eng/Jenkins-Zero-To-Hero.git'
+        //sh 'echo passed'
+        git branch: 'main', url: 'https://github.com/William-eng/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
