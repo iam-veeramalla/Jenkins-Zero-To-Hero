@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-     image 'abhishekf5/maven-abhishek-docker-agent'
+     image 'abhishekf5/maven-abhishek-docker-agent:v1'
      args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
     }
   }
