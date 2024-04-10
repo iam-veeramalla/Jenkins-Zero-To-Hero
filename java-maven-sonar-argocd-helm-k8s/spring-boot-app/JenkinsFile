@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
      image 'maven'
-     args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
+     //args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
     }
   }
   stages {
