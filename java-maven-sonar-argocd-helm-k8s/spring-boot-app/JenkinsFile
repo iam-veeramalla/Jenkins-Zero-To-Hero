@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-     image 'maven:3.9.3-eclipse-temurin-17'
+     image 'willywan/first-image'
      args '-v $HOME/.m2:/root/.m2' // mount Docker socket to access the host's Docker daemon
     }
   }
@@ -31,7 +31,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "maven:3.9.3-eclipse-temurin-17:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "willywan/first-image:${BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('DockerCred')
       }
