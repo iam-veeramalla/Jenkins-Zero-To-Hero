@@ -76,6 +76,15 @@ After you login to Jenkins,
       
 <img width="1291" alt="Screenshot 2023-02-01 at 10 56 25 AM" src="https://user-images.githubusercontent.com/43399466/215959008-3ebca431-1f14-4d81-9f12-6bb232bfbee3.png">
 
+### Check if Jenkins is running:
+
+```
+ps -ef | grep jenkins
+```
+
+Output:
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/a0cac2c9-1493-4c0a-9aa3-2e21722fbc71)
+
 ### Click on Install suggested plugins
 
 <img width="1291" alt="Screenshot 2023-02-01 at 10 58 40 AM" src="https://user-images.githubusercontent.com/43399466/215959294-047eadef-7e64-4795-bd3b-b1efb0375988.png">
