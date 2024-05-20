@@ -170,3 +170,14 @@ Click Create
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/7f8ff5dd-2f9f-462a-8e63-ddf22c986138)
 
+
+### 2. Git Hub Credentials
+
+Go to Github -> Settings -> Developer Settings -> Personal Access tokens -> Tokens (Classic)
+Generate New Token (Classic)
+
+Name the token 'jenkins'.
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4f842dbb-676f-4be1-a500-3091ffdc58d0)
+
+
