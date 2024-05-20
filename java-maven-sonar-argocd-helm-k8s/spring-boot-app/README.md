@@ -113,6 +113,11 @@ Under Kind select Secret text from the dropdown.
 Paste the generated credentials from SonarQube to Secrets here in Jenkins.
 ID can be named SonarQube.
 
+Click Create
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ccb0c6a4-920a-409a-ac8d-d289fd742eda)
+
+
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c59e6db1-1b3c-488b-b06c-e17f4ca0411a)
 
 
