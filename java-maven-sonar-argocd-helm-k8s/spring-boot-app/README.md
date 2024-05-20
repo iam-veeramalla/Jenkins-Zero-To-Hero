@@ -36,6 +36,7 @@ java -jar target/spring-boot-web.jar
 
 Build the Docker Image
 
+
 ```
 docker build -t ultimate-cicd-pipeline:v1 .
 ```
@@ -148,3 +149,19 @@ http://<ec2-instance-public-ip>:8080/restart
 The docker agent configuration is now successful.
 
 
+# CD
+
+Two things are missing from Jenkins to make it run automatically
+1. Docker Hub credentials (to pull image if public and push it back to docker hub when completed)
+2. Git Hub credentials (to access the repo and to push changes back to repo)
+
+### 1. Docker Hub Credentials
+
+Go to Jenkins and click on Manage Genkins -> Credentials -> System -> Global credentials 
+Click on Add Credentials button
+
+Fill the below information
+
+variable name in JenkinsFile is 'docker-cred'. We'll use the ID to match the variable name from JenkinsFile. 
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/7fbc0060-95d9-482b-9e12-6abc7030294b)
