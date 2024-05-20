@@ -109,6 +109,9 @@ Copy the generated token.
 Go to Jenkins and click on Manage Genkins -> Credentials -> System -> Global credentials 
 Click on Add Credentials button
 
+Under Kind select Secret Text from dropdown
+Paste the generated credentials from SonarQube to Secrets here in Jenkins.
+
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c59e6db1-1b3c-488b-b06c-e17f4ca0411a)
 
 
