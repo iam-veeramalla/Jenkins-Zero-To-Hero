@@ -59,7 +59,7 @@ adduser sonarqube
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4fd8a7df-9aff-4225-8e96-68f1971c0245)
 
-
+Use the below commands one by one while proceeding.
 ```
 sudo su - sonarqube
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
