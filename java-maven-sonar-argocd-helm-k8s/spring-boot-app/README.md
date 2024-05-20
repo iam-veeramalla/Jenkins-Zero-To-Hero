@@ -121,7 +121,7 @@ Click Create
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ccb0c6a4-920a-409a-ac8d-d289fd742eda)
 
 
-## Docker Slave Configuration
+## Docker Slave Configuration on EC2 Instance
 
 Run the below command to Install Docker
 
@@ -147,7 +147,4 @@ http://<ec2-instance-public-ip>:8080/restart
 
 The docker agent configuration is now successful.
 
-
-
-### Install Docker on EC2 Instance
 
