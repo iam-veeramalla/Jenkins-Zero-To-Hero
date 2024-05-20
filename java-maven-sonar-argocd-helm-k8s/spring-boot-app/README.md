@@ -73,4 +73,7 @@ cd sonarqube-9.4.0.54424/bin/linux-x86-64/
 Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
 (Can use jenkins ip-address with port 9000)
 
+Ensure to add Inbound Rule that allows incoming traffic on port 9000 on the EC2 instance.
+Note: Since the sonarqube was installed on the ec2 instance we use the public IP. We can also use private IP when an organization has special VPC for sonarqube server. In that case the network will need to be configured as sonarqube will need access to communicate. For ease we installed SonarQube server on the same EC2 virtual machine instance and it avoids configuration of the networking.
+
 
