@@ -100,8 +100,10 @@ Then click on Security tab:
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c75b4f45-0cb9-46a1-ba50-5fb9fe63298e)
 
-Entre token name as 'jenkins'. 
+Entre token name as 'jenkins' and click Generate.
+
+Go to Jenkins and click on Manage Genkins -> Credentials -> System -> Global credentials 
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/3dd78f5b-6e39-4915-bff6-6814b6faf490)
 
-
+Copy the generated token.
