@@ -119,3 +119,7 @@ ID can be named SonarQube.
 Click Create
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ccb0c6a4-920a-409a-ac8d-d289fd742eda)
+
+
+### Install Docker on EC2 Instance
+
