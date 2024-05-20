@@ -57,7 +57,7 @@ pipeline {
                     git config user.email "77811423+rgitrepo@users.noreply.github.com"
                     git config user.name "Raja Khan"
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    cp java-maven-sonar-argocd-helm-k8s/templates/deployment-template.yml java-maven-sonar-argocd-helm-k8s/manifests/deployment.yml
+                    cp java-maven-sonar-argocd-helm-k8s/templates/deployment-template.yml java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
                     sed -i "s/BUILD_NUMBER_PLACEHOLDER/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/manifests/deployment.yml
                     git add java-maven-sonar-argocd-helm-k8s/manifests/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
