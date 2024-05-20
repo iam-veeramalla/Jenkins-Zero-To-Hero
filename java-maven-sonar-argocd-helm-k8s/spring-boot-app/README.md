@@ -80,6 +80,15 @@ Ensure to add Inbound Rule that allows incoming traffic on port 9000 on the EC2 
 
 Note: Since the sonarqube was installed on the ec2 instance we use the public IP. We can also use private IP when an organization has special VPC for sonarqube server. In that case the network will need to be configured as sonarqube will need access to communicate. For ease we installed SonarQube server on the same EC2 virtual machine instance and it avoids configuration of the networking.
 
+### Login to SonarQube Server
+Default Values when the SonarQube server just started:
+user: admin
+pass: admin
+
+It immediatey asks to update the password.
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/34cd9422-4566-4d8e-afc9-98fa0fb5a718)
+
 
 
 
