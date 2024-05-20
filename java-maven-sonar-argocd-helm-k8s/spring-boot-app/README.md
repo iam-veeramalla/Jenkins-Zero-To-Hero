@@ -93,12 +93,15 @@ It immediatey asks to update the password.
 When Jenkins pipeline is going to run it will need to access SonarQube. We need Jenkins to be able to do that. 
 
 Under the A click on My Account.
+
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/8c0e36e9-eca8-473e-8c42-c2de36b0dea9)
 
 Then click on Security tab:
+
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c75b4f45-0cb9-46a1-ba50-5fb9fe63298e)
 
-Type name of token. Here I type 'jenkins' and click on Generate
+Entre token name as 'jenkins'. 
+
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/3dd78f5b-6e39-4915-bff6-6814b6faf490)
 
 
