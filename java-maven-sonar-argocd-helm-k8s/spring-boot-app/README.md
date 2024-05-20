@@ -165,3 +165,8 @@ Fill the below information
 variable name in JenkinsFile is 'docker-cred'. We'll use the ID to match the variable name from JenkinsFile. 
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/7fbc0060-95d9-482b-9e12-6abc7030294b)
+
+Click Create
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/7f8ff5dd-2f9f-462a-8e63-ddf22c986138)
+
