@@ -56,6 +56,32 @@ sudo su -
 apt install unzip
 adduser sonarqube
 
+```
+root@ip-172-31-58-24:~# adduser sonarqube
+info: Adding user `sonarqube' ...
+info: Selecting UID/GID from range 1000 to 59999 ...
+info: Adding new group `sonarqube' (1001) ...
+info: Adding new user `sonarqube' (1001) with group `sonarqube (1001)' ...
+info: Creating home directory `/home/sonarqube' ...
+info: Copying files from `/etc/skel' ...
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for sonarqube
+Enter the new value, or press ENTER for the default
+        Full Name []:
+        Room Number []:
+        Work Phone []:
+        Home Phone []:
+        Other []:
+Is the information correct? [Y/n] Y
+info: Adding new user `sonarqube' to supplemental / extra groups `users' ...
+info: Adding user `sonarqube' to group `users' ...
+root@ip-172-31-58-24:~#
+
+
+
+```
 sudo su - sonarqube
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
 unzip *
