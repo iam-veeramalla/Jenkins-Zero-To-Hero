@@ -180,4 +180,10 @@ Name the token 'jenkins'.
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4f842dbb-676f-4be1-a500-3091ffdc58d0)
 
+Paste the token into the secret
+
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/bf720272-1c49-467f-b43a-c4306c08d9b5)
+
+
 
