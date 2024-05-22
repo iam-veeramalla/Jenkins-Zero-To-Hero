@@ -119,7 +119,7 @@ This file can have any name. Notice the capital 'F" in JenkinsFile name.
 
 
 # Maven Pipeline Plugin
-Not needed as Maven in part of the Docker image. If Maven wasn't part of the image we'd need to install the plugin here in Jenkins then.
+Not needed as Maven in part of the Docker image. If Maven wasn't part of the image we'd need to install the plugin here in Jenkins then. We can create our own images with Maven in it. Currently we're using the one Abhishek provided. To see the image stored at Docker Hub see the jenkinsFile.
 
 
 
