@@ -150,7 +150,7 @@ Wait for the Jenkins to be restarted.
 
 # SonarQube Installation on EC2 Instance
 It can be installed on any server. For an organization it probably will be an internal server and with a private IP address.
-For this demo we'll install on the EC2 and use the public IP address to access it. 
+For this project we'll install on the EC2 and use the public IP address to access it. 
 AWS will need connectivitiy to the SonarQube server. Installing on the same EC2 instance avoids the complexity of configuring the Network, VPC, Ingress, VPC Pairing etc used for communciation between SonarQube server and AWS that has Jenkins server.
 
 ## Next Steps
