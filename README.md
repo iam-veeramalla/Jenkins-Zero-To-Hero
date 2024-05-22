@@ -110,15 +110,7 @@ This file can have any name. Notice the capital 'F" in JenkinsFile name.
 ![1 Pipeline Config](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/41c48e70-39fe-4830-aeab-00285438c46e)
 
 
-
-
-
-
-
-
-
-
-
+![2 Pipeline Config](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/cf103133-cef3-4e1c-8827-81f414458175)
 
 
 
