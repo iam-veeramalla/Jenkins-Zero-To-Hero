@@ -118,50 +118,42 @@ This file can have any name. Notice the capital 'F" in JenkinsFile name.
 
 
 
+# Maven Pipeline Plugin
+Not needed as Maven in part of the Docker image. If Maven wasn't part of the image we'd need to install the plugin here in Jenkins then.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Docker Pipeline Plugin
 ## Install the Docker Pipeline plugin in Jenkins:
 
    - Log in to Jenkins.
    - Go to Manage Jenkins > Manage Plugins.
    - In the Available tab, search for "Docker Pipeline".
    - Select the plugin and click the Install button.
-   - Restart Jenkins after the plugin is installed.
+   - Restart Jenkins after the plugin is installed (we'll restart after all plugins are installed)
    
 <img width="1392" alt="Screenshot 2023-02-01 at 12 17 02 PM" src="https://user-images.githubusercontent.com/43399466/215973898-7c366525-15db-4876-bd71-49522ecb267d.png">
 
 Wait for the Jenkins to be restarted.
+
+# SonarQube Pipeline Plugin
+## Install the SonarQube plugin in Jenkins:
+
+   - Go to Manage Jenkins > Manage Plugins.
+   - In the Available tab, search for "SonarQube Scanner".
+   - Select the plugin and click the Install button.
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e38a81dd-7cf9-45f6-a73c-fe797583feee)
+
+
+## Docker Slave Configuration
+
+
+
+
+
+
+
 
 
 ## Docker Slave Configuration
