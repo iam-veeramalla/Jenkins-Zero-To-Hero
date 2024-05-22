@@ -138,6 +138,19 @@ This file can have any name. Notice the capital 'F" in JenkinsFile name.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Install the Docker Pipeline plugin in Jenkins:
 
    - Log in to Jenkins.
