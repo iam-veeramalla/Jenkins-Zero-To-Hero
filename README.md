@@ -327,9 +327,10 @@ $ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/rele
 ```
 $ kubectl create -f https://operatorhub.io/install/argocd-operator.yaml
 ```
+
 This Operator will be installed in the "operators" namespace and will be usable from all namespaces in the cluster.
 
-```
+
 3. After install, watch your operator come up using next command.
 
 ```
