@@ -351,5 +351,187 @@ kubectl get pods -n operators
 
 
 
+### Run the Jenkins Pipeline
+
+Go into the Jenkins pipeline and click on 'Build Now'.
+
+Most pipelines have small errors that need fixing before they run. If it's the case fix those errors.
+
+### Verify the image has been pushed to Docker Hub
+
+Once the pipeline has run see if the image has been build and pushed to Docker Hub.
+- Go to docker hub account and look for the image.
+- It can also be checked on the EC2 instance by typing 'docker images'.
+
+
+## Deploy Cluster on Kubernetes using ArgoCD
+
+### Minikube Status
+
+Check status of minikube on personal machine (that's where we installed it for this project).
+Otherwise check into whatever location the Kubernets is running.
+
+```
+minikube status
+```
+
+Go to the ArgoCD documentation on argo-cd-operator.readthedocs.io
+Usage -> Basics
+
+Copy that example code at the top.
+
+We're trying to create the ArgoCD controller here.
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: example-argocd
+  labels:
+    example: basic
+spec: {}
+```
+
+Create a file with this code.
+
+```
+vim argocd-basic.yml
+```
+
+Then apply this to kubernetes
+```
+kubectl apply -f argocd-basic.yml
+```
+
+Note: we can also install using Helm Charts but it's much better to learn how to do it.
+
+```
+kubectl get pods
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c0b83e7d-f74c-45c6-ae41-53254de4c1f4)
+
+ArgoCD workloads are getting created.
+
+#### Run the Cluster in Browser
+
+```
+kubectl get svc
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4e3c843f-313b-4223-9f8f-19d1f6fdc2e9)
+
+example-argocd-server service needs to change from ClusterIP to NodePort.
+
+```
+kubectl edi svc example-argocd-server
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ca989fa0-aef1-4982-9382-0b1abc95a901)
+
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/f1ac9fac-b895-44d3-8573-67fd73d9b02f)
+
+
+Check if the change took place
+
+```
+kubectl get svc
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4d8edd74-9904-4edd-9906-173fb4776032)
+
+To execute it on browser minikube offers and automatic service. 
+
+```
+minikube service argocd-server
+```
+
+Minikube will generate a url using which we can access using browser. It's done by doing some port forwarding.
+
+```
+minikube service list
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/d9cbe5c0-d937-42cf-846f-bdcc869cc7a4)
+
+
+Before accessing via browser ensure the pods are up and running
+
+```
+kubectl get pods
+```
+
+Notice the pods are now running.
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/fcc53200-84da-484d-929d-32f2a7ccdd2a)
+
+
+#### Access the ArgoCD via URL
+
+Use the url to access AcgoCD via browser. 
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/11c7ee85-adac-484b-8ab0-d90fd13644bc)
+
+
+Username and Password are needed.
+
+Username: admin
+
+For password use the command
+
+```
+kubectl get secret
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/cee29984-2235-49ca-9881-caad09b8509e)
+
+
+ArgoCD stores secret in example-argocd-cluster. To get it.
+
+```
+kubectl edit secret example-argocd-cluster
+```
+
+Copy the password.
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/6cdc8667-5503-4823-9aba-83bdc244c758)
+
+
+Kubernetes secrets are not in plain text format but base64 ecrypted. To get the password they need to be decrypted first.
+
+```
+echo copied_password_goes_here | base64 -d
+```
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/53d49959-98f2-4893-b86f-4661741b70eb)
+
+Copy the password and paste it into the password field on ArgoCD login.
+
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e8e28c09-b75b-4509-b4e5-d32c733723ec)
+
+Logged into ArgoCD successfully.
+
+![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/8eb254cb-0c3e-4116-b563-1cd9a69af42d)
+
+
+#### Configure ArgoCD
+
+Fill the details
+
+Application Name: test
+Project Name: default
+Sync Policy: Automatic
+Repository URL: https://github.com/rgitrepo/Jenkins-Zero-To-Hero
+Path: java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
+DESTINATION
+Cluster URL: https://kubernetes.deault.svc
+Namespace: default
+
+
+![5 Pods visible in ArgoCD](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/9b8d1369-06de-4569-b363-346cab767062)
+
+
 
 
