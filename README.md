@@ -299,10 +299,20 @@ No installation needed. We also could user Argo Image Updater but it's not a too
 ## ArgoCD and Kubernets Cluster Installation
 We're installing Kubernetes on local machine (laptop) instead of EC2 instance. There are many resources on EC2 instance and to save on paying for a more robust EC2 instance local machine is being used.
 
+Go to this website to install MiniKube: https://minikube.sigs.k8s.io/docs/start/
+
+I had to start HyperV in my windows machine by going into settings and selecting a checkbox. 
 
 
 
+### Kubernetes Operators and Contollers
 
+Whenever installing any Kubernetes Controller (AgoCD, FluxCD) it's advisable to use Kubernetes Operators. Kubernets Operators make installation and lifecycle management of Kubernets Controllers significantly easier. Operators allow easy updates, version control, telementry. We'll be using Argo CD here. 
+
+
+- Go to Operator Hub (operatorhub.io) and follow the instructions to install ArgoCD. 
+- To install ArgoCD which is a kubernetes controller first an operator is installed to manage this or any other controller installations.
+- An operator is installed only once and then any controller can be used using the same operator.
 
 
 
