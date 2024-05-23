@@ -307,14 +307,29 @@ I had to start HyperV in my windows machine by going into settings and selecting
 
 ### Kubernetes Operators and Contollers
 
-Whenever installing any Kubernetes Controller (AgoCD, FluxCD) it's advisable to use Kubernetes Operators. Kubernets Operators make installation and lifecycle management of Kubernets Controllers significantly easier. Operators allow easy updates, version control, telementry. We'll be using Argo CD here. 
+Whenever installing any Kubernetes Controller (AgoCD, FluxCD) it's advisable to use Kubernetes Operators. Kubernets Operators make installation and lifecycle management of Kubernets Controllers significantly easier. Operators allow easy updates, version control, telemetry. They also have some default configurations out of the box. We'll be using Argo CD here. 
 
 
 - Go to Operator Hub (operatorhub.io) and follow the instructions to install ArgoCD. 
 - To install ArgoCD which is a kubernetes controller first an operator is installed to manage this or any other controller installations.
 - An operator is installed only once and then any controller can be used using the same operator.
 
+Install on Kubernetes
+Install Operator Lifecycle Manager (OLM), a tool to help manage the Operators running on your cluster.
 
+$ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
+Copy to Clipboard
+Install the operator by running the following command:What happens when I execute this command?
+
+$ kubectl create -f https://operatorhub.io/install/argocd-operator.yaml
+Copy to Clipboard
+This Operator will be installed in the "operators" namespace and will be usable from all namespaces in the cluster.
+
+After install, watch your operator come up using next command.
+
+$ kubectl get csv -n operators
+Copy to Clipboard
+To use it, checkout the custom resource definitions (CRDs) introduced by this operator to start using it.
 
 
 
