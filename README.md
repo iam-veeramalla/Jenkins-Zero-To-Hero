@@ -291,7 +291,24 @@ Once you are done with the above steps, it is better to restart Jenkins.
 http://<ec2-instance-public-ip>:8080/restart
 ```
 
-The docker agent configuration is now successful
+The docker agent configuration is now successful.
+
+## Shell Script
+No installation needed. We also could user Argo Image Updater but it's not a tool used by the mainstream at the moment. So we're using Bash script. This script will updated the image to the Manifests Repo. For the GitHub repo we don't need any installation either.
+
+## ArgoCD and Kubernets Cluster Installation
+We're installing Kubernetes on local machine (laptop) instead of EC2 instance. There are many resources on EC2 instance and to save on paying for a more robust EC2 instance local machine is being used.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
