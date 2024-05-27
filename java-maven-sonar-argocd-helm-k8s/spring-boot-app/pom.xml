@@ -70,6 +70,15 @@
 
         </plugins>
     </build>
+<settings>
+  <servers>
+    <server>
+      <id>deploymentRepo</id>
+      <username>admin</username>
+      <password>123456</password>
+    </server>
+  </servers>
+</settings>	
     <distributionManagement>
 	<repository>
 		<id>deploymentRepo</id>
