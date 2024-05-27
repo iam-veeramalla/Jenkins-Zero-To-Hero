@@ -70,7 +70,7 @@
 
         </plugins>
     </build>
-    <settings>
+<!--     <settings>
       <servers>
         <server>
           <id>deploymentRepo</id>
@@ -78,17 +78,21 @@
           <password>123456</password>
         </server>
      </servers>
-    </settings>	
+    </settings>	 -->
     <distributionManagement>
 	<repository>
 		<id>deploymentRepo</id>
 		<name>Internal Releases</name>
+		<username>admin</username>
+                <password>123456</password>
 		<url>http://34.207.62.195:8081/repository/maven-releases/</url>
 	</repository>
  
 	<snapshotRepository>
 		<id>deploymentRepo</id>
 		<name>Internal Releases</name>
+		<username>admin</username>
+                <password>123456</password>
 		<url>http://34.207.62.195:8081/repository/maven-snapshots/</url>
 	</snapshotRepository>
 
