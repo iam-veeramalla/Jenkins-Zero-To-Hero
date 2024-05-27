@@ -94,10 +94,6 @@
                     <snapshots>
                         <enabled>false</enabled>
                     </snapshots>
-                    <authentication>
-                        <username>${repo.username}</username>
-                        <password>${repo.password}</password>
-                    </authentication>
                 </repository>
             </repositories>
             <pluginRepositories>
@@ -110,10 +106,6 @@
                     <snapshots>
                         <enabled>false</enabled>
                     </snapshots>
-                    <authentication>
-                        <username>${repo.username}</username>
-                        <password>${repo.password}</password>
-                    </authentication>
                 </pluginRepository>
             </pluginRepositories>
         </profile>
