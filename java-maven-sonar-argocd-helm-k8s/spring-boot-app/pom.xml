@@ -69,12 +69,12 @@
         <repository>
             <id>deploymentRepo</id>
             <name>Internal Releases</name>
-            <url>http://34.207.62.195:8081/repository/maven-releases/</url>
+            <url>http://100.26.240.193:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>deploymentRepo</id>
             <name>Internal Snapshots</name>
-            <url>http://34.207.62.195:8081/repository/maven-snapshots/</url>
+            <url>http://100.26.240.193:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -87,7 +87,7 @@
             <repositories>
                 <repository>
                     <id>deploymentRepo</id>
-                    <url>http://34.207.62.195:8081/repository/maven-releases/</url>
+                    <url>http://100.26.240.193:8081/repository/maven-releases/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
@@ -99,7 +99,7 @@
             <pluginRepositories>
                 <pluginRepository>
                     <id>deploymentRepo</id>
-                    <url>http://34.207.62.195:8081/repository/maven-releases/</url>
+                    <url>http://100.26.240.193:8081/repository/maven-releases/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
