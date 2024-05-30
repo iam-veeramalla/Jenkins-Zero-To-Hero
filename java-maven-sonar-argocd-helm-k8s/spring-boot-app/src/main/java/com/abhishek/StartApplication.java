@@ -22,6 +22,7 @@
 //     }
 
 // }
+
 package com.abhishek;
 
 import org.springframework.boot.SpringApplication;
@@ -47,7 +48,7 @@ public class StartApplication {
     @GetMapping("/")
     public String index(final Model model) {
         // Hardcoded values
-        model.addAttribute("title", "I have successfully built a spring boot application using Maven");
+        model.addAttribute("title", "I have successfully built a sprint boot application using Maven");
         model.addAttribute("msg", "This application is deployed on to Kubernetes using Argo CD");
 
         // Unnecessary code
@@ -77,4 +78,32 @@ public class StartApplication {
         return "index";
     }
 
- 
+    @PostMapping("/submit")
+    public String submitForm(@RequestParam("input") String input, final Model model) {
+        // Cross-Site Scripting (XSS) Vulnerability
+        model.addAttribute("response", "Form submitted with input: " + input);
+
+        // SQL Injection Vulnerability
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydatabase", "user", "password");
+            Statement statement = connection.createStatement();
+            String query = "SELECT * FROM users WHERE name = '" + input + "'";
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                model.addAttribute("user", resultSet.getString("name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "response";
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(StartApplication.class, args);
+    }
+
+    private void someUnrelatedMethod() {
+        System.out.println("This method has nothing to do with the main functionality of the class.");
+    }
+}
