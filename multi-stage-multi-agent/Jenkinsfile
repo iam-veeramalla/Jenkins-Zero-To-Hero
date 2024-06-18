@@ -1,9 +1,7 @@
 pipeline {
     // Define separate agents for Java and Node.js stages
     agent {
-        node {
-            label 'java-builder' // Label for Java agent
-        }
+        node any
     }
 
     stages {
