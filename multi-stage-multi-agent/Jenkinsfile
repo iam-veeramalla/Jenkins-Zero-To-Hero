@@ -1,21 +1,53 @@
 pipeline {
-  agent none
-  stages {
-    stage('Back-end') {
-      agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
-      }
-      steps {
-        sh 'mvn --version'
-      }
+    // Define separate agents for Java and Node.js stages
+    agent {
+        node {
+            label 'java-builder' // Label for Java agent
+        }
     }
-    stage('Front-end') {
-      agent {
-        docker { image 'node:16-alpine' }
-      }
-      steps {
-        sh 'node --version'
-      }
+
+    stages {
+        stage('Build Java application (Docker)') {
+            agent {
+                docker {
+                    image 'openjdk:17-alpine' // Docker image for Java build
+                    args '-v $HOME/.m2:/root/.m2' // Optional: Mount Maven repository
+                }
+            }
+            steps {
+                sh 'javac HelloWorld.java' // Compile Java code
+            }
+        }
+        stage('Run unit tests (optional)') {
+            // Update agent if needed for unit tests (e.g., same Java agent)
+            agent {
+                docker {
+                    image 'openjdk:17-alpine' // Reuse Java image for tests (optional)
+                }
+            }
+            steps {
+                // Add your unit test commands here (e.g., using JUnit)
+            }
+        }
+        stage('Build Node.js frontend (Docker)') {
+            agent {
+                docker {
+                    image 'node:16-alpine' // Docker image for Node.js build
+                }
+            }
+            steps {
+                sh 'npm install express' // Install dependencies
+            }
+        }
+        stage('Start Node.js server (Docker)') {
+            agent {
+                docker {
+                    image 'node:16-alpine' // Reuse Node.js image for server
+                }
+            }
+            steps {
+                sh 'node app.js' // Start the Node.js server
+            }
+        }
     }
-  }
 }
