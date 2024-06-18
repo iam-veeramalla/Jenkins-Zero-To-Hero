@@ -18,14 +18,6 @@ pipeline {
                 sh 'javac HelloWorld.java' // Compile Java code
             }
         }
-        stage('Run unit tests (optional)') {
-            // Update agent if needed for unit tests (e.g., same Java agent)
-            agent {
-                docker {
-                    image 'openjdk:17-alpine' // Reuse Java image for tests (optional)
-                }
-            }
-        }
         stage('Build Node.js frontend (Docker)') {
             agent {
                 docker {
