@@ -25,9 +25,6 @@ pipeline {
                     image 'openjdk:17-alpine' // Reuse Java image for tests (optional)
                 }
             }
-            steps {
-                // Add your unit test commands here (e.g., using JUnit)
-            }
         }
         stage('Build Node.js frontend (Docker)') {
             agent {
