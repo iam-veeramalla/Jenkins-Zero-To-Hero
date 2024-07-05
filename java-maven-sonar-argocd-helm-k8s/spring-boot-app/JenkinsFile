@@ -6,7 +6,7 @@ pipeline {
     }
    
     }
-  }
+  
   stages {
     stage('Checkout') {
       steps {
@@ -25,6 +25,7 @@ pipeline {
      environment {
          SONARQUBE_URL = 'http://127.0.0.1:9000'
          SONARQUBE_TOKEN = credentials('sonarqube') // Use the ID of the credentials configured in Jenkins
+      }
        
       steps {
                 script {
@@ -39,6 +40,7 @@ pipeline {
       environment {
          SONARQUBE_URL = 'http://127.0.0.1:9000'
          SONARQUBE_TOKEN = credentials('sonarqube') // Use the ID of the credentials configured in Jenkins
+}
       steps {
         withSonarQubeEnv('sonarqubeserver') {
           sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONARQUBE_TOKEN}'
@@ -82,3 +84,5 @@ pipeline {
     }
   }
 }
+
+
