@@ -23,7 +23,7 @@ pipeline {
     }
     stage('Check SonarQube Connectivity') {
      environment {
-         SONARQUBE_URL = 'http://127.0.0.1:9000'
+         SONARQUBE_URL = 'http://172.210.82.87:9000'
          SONARQUBE_TOKEN = credentials('sonarqube') // Use the ID of the credentials configured in Jenkins
       }
        
@@ -38,7 +38,7 @@ pipeline {
 }
     stage('Static Code Analysis') {
       environment {
-         SONARQUBE_URL = 'http://127.0.0.1:9000'
+         SONARQUBE_URL = 'http://172.210.82.87:9000'
          SONARQUBE_TOKEN = credentials('sonarqube') // Use the ID of the credentials configured in Jenkins
 }
       steps {
