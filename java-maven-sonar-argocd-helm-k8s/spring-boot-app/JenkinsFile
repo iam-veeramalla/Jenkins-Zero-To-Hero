@@ -4,6 +4,10 @@ pipeline {
       image 'abhishekf5/maven-abhishek-docker-agent:v1'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
+   environment {
+         SONARQUBE_URL = 'http://127.0.0.1:9000'
+         SONARQUBE_TOKEN = credentials('sonarqube') // Use the ID of the credentials configured in Jenkins
+    }
   }
   stages {
     stage('Checkout') {
@@ -20,14 +24,20 @@ pipeline {
       }
     }
     stage('Check SonarQube Connectivity') {
-            steps {
-                sh 'curl -I http://127.0.0.1:9000'
+       
+      steps {
+                script {
+                    def response = sh(script: "curl -I ${SONARQUBE_URL}", returnStatus: true)
+                    if (response != 0) {
+                        error "SonarQube server not reachable"
+                    }
             }
         }
+}
     stage('Static Code Analysis') {
       steps {
         withSonarQubeEnv('sonarqubeserver') {
-          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean verify sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login=$sonarqube'
+          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.login=${SONARQUBE_TOKEN}'
         }
       }
     }
