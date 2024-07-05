@@ -19,6 +19,11 @@ pipeline {
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
+    stage('Check SonarQube Connectivity') {
+            steps {
+                sh 'curl -I http://127.0.0.1:9000'
+            }
+        }
     stage('Static Code Analysis') {
       steps {
         withSonarQubeEnv('sonarqubeserver') {
