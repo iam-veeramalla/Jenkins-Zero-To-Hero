@@ -5,35 +5,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Compile the Java code
-                    sh 'javac HelloWorld.java'
+                    // Print Hello, World!
+                    echo 'Hello, World!'
                 }
             }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    // Run the Java program
-                    sh 'java HelloWorld'
-                }
-            }
-        }
-
-        stage('Archive') {
-            steps {
-                script {
-                    // Archive the compiled class files
-                    archiveArtifacts artifacts: '*.class', fingerprint: true
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            // Clean up workspace
-            cleanWs()
         }
     }
 }
