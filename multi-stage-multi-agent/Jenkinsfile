@@ -1,21 +1,40 @@
 pipeline {
-  agent none
-  stages {
-    stage('Back-end') {
-      agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
-      }
-      steps {
-        sh 'javac HelloWorld.java'
-      }
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Compile the Java code
+                    sh 'javac HelloWorld.java'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run the Java program
+                    sh 'java HelloWorld'
+                }
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                script {
+                    // Archive the compiled class files
+                    archiveArtifacts artifacts: '*.class', fingerprint: true
+                }
+            }
+        }
     }
-    stage('Front-end') {
-      agent {
-        docker { image 'node:16-alpine' }
-      }
-      steps {
-        sh 'node --version'
-      }
+
+    post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
     }
-  }
 }
+
