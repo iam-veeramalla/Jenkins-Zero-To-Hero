@@ -1,23 +1,12 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.8.1-jdk-8-alpine'
-            args '--rm -v $PWD:/app -v $HOME/.m2:/root/.m2'
+            image 'node:16-alpine'
+            args '--rm -v $PWD:/app'
         }
     }
     stages {
-        stage('Build Backend') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-        stage('Build Frontend') {
-            agent {
-                docker {
-                    image 'node:16-alpine'
-                    args '--rm -v $PWD:/app'
-                }
-            }
+        stage('Build') {
             steps {
                 sh 'npm install'
                 sh 'npm run build'
@@ -25,7 +14,7 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'java -jar target/HelloWorld.jar'
+                sh 'node server.js'
             }
         }
     }
