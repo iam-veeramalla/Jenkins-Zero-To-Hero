@@ -1,39 +1,31 @@
 pipeline {
-    // Define separate agents for Java and Node.js stages
     agent {
-        node any
+        docker {
+            image 'maven:3.8.1-jdk-8-alpine'
+            args '--rm -v $PWD:/app -v $HOME/.m2:/root/.m2'
+        }
     }
-
     stages {
-        stage('Build Java application (Docker)') {
-            agent {
-                docker {
-                    image 'openjdk:17-alpine' // Docker image for Java build
-                    args '-v $HOME/.m2:/root/.m2' // Optional: Mount Maven repository
-                }
-            }
+        stage('Build Backend') {
             steps {
-                sh 'javac HelloWorld.java' // Compile Java code
+                sh 'mvn clean package'
             }
         }
-        stage('Build Node.js frontend (Docker)') {
+        stage('Build Frontend') {
             agent {
                 docker {
-                    image 'node:16-alpine' // Docker image for Node.js build
+                    image 'node:16-alpine'
+                    args '--rm -v $PWD:/app'
                 }
             }
             steps {
-                sh 'npm install express' // Install dependencies
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
-        stage('Start Node.js server (Docker)') {
-            agent {
-                docker {
-                    image 'node:16-alpine' // Reuse Node.js image for server
-                }
-            }
+        stage('Run') {
             steps {
-                sh 'node app.js' // Start the Node.js server
+                sh 'java -jar target/HelloWorld.jar'
             }
         }
     }
