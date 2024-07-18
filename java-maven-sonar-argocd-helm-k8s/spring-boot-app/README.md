@@ -52,8 +52,8 @@ Hurray !! Access the application on `http://<ip-address>:8010`
 ### Configure a Sonar Server locally
 
 ```
-apt install unzip
-adduser sonarqube
+sudo apt install unzip
+sudo adduser sonarqube
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
 unzip *
 chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
