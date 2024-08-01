@@ -8,8 +8,8 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-      //  sh 'echo passed'
-        git branch: 'main', url: 'https://github.com/SpoorthyUnayak/Jenkins.git'
+        sh 'echo passed'
+        //git branch: 'main', url: 'https://github.com/SpoorthyUnayak/Jenkins.git'
       }
     }
     stage('Build and Test') {
