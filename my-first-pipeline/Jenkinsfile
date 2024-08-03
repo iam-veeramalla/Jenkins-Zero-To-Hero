@@ -8,5 +8,12 @@ pipeline {
         sh 'node --version'
       }
     }
+  stages {
+    stage('Ashraff') {
+      steps {
+        sh 'node --version'
+      }
+    }
+    
   }
 }
