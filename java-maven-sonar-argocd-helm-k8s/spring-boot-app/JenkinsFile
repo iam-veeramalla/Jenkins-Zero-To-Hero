@@ -41,11 +41,11 @@ pipeline {
                     git config user.email "spoorthyunayak@gmail.com"
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    echo "Current working directory now is:"
-                    pwd
+                    sh echo "Current working directory now is:"
+                    sh pwd
+                    sh echo "now the Current working directory is:"
                     cd gitOpsProject/kubernetesProject
                     echo "Current working directory is:"
-                    pwd
                     sed -i "s/tagname/${BUILD_NUMBER}/g" gitOpsProject/kubernetesProject/deployment.yml
                     git add gitOpsProject/kubernetesProject/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
