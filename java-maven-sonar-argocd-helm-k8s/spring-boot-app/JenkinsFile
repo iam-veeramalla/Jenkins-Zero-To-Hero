@@ -65,7 +65,7 @@ pipeline {
                             git checkout ReleaseBranchPP
                             ls
                             cat deployment.yml
-                            sed -i "s/16/${BUILD_NUMBER}/g" deployment.yml
+                            sed -i "s/replaceImageTag/spoorthynayak/docker_image:${BUILD_NUMBER}/g" deployment.yml
                             git add deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                             git push -f https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
