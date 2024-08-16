@@ -50,8 +50,7 @@ pipeline {
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}             
                     cd gitOpsProject                    
-                    if [ "${DEPLOY_ENV}" = "dev" ]; then
-                           git clone https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
+                    if [ "${DEPLOY_ENV}" = "dev" ]; then                          
                             echo "dev branch is ReleaseBranchDev in GitOps"
                            sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                            git add kubernetesProject/deployment.yml
