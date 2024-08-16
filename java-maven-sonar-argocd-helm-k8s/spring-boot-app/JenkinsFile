@@ -56,7 +56,6 @@ pipeline {
                            git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
-
                     elif [ "$params.DEPLOY_ENV" == "preProd" ]; then
                           echo "preProd branch is ReleaseBranchPP in GitOps"
                          sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
@@ -69,9 +68,7 @@ pipeline {
                           git add kubernetesProject/deployment.yml
                            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-
                        fi
-
                 '''
             }
         }
