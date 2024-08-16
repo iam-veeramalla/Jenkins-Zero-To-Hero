@@ -54,7 +54,7 @@ pipeline {
                     git add kubernetesProject/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     if (params.DEPLOY_ENV == 'dev') {
-                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
                         } else if (params.DEPLOY_ENV == 'preProd') {
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
                         } else if (params.DEPLOY_ENV == 'production') {
