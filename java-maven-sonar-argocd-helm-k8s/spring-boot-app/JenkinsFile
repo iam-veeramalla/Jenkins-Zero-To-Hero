@@ -42,6 +42,7 @@ pipeline {
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     git clone https://github.com/SpoorthyUnayak/gitOpsProject
+                    cd gitOpsProject
                     sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                     git add kubernetesProject/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
