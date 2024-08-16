@@ -50,19 +50,19 @@ pipeline {
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}             
                     cd gitOpsProject                    
-                    if [ "$params.DEPLOY_ENV" = "dev" ]; then
+                    if [ "${DEPLOY_ENV}" = "dev" ]; then
                             echo "dev branch is ReleaseBranchDev in GitOps"
                            sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                            git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
-                    elif [ "$params.DEPLOY_ENV" = "preProd" ]; then
+                    elif [ "${DEPLOY_ENV}" = "preProd" ]; then
                           echo "preProd branch is ReleaseBranchPP in GitOps"
                          sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                          git add kubernetesProject/deployment.yml
                          git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                           git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
-                   elif [ "$params.DEPLOY_ENV" = "production" ]; then
+                   elif [ "${DEPLOY_ENV}" = "production" ]; then
                             echo "production branch is main in GitOps"
                           sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                           git add kubernetesProject/deployment.yml
