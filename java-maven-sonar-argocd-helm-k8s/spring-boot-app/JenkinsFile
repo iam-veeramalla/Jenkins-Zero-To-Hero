@@ -56,8 +56,7 @@ pipeline {
                             git checkout ReleaseBranchDev
                             ls kubernetesProject/ 
                             sed -i "s/38/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
-                            cat kubernetesProject/deployment.yml
-                            git pull origin ReleaseBranchDev
+                            cat kubernetesProject/deployment.yml                            
                             git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                             git push -f https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
