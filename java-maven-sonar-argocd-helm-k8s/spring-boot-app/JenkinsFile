@@ -44,7 +44,7 @@ pipeline {
             GIT_USER_NAME = "SpoorthyUnayak"
         }
         steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {              
                 sh '''
                     git config user.email "spoorthyunayak@gmail.com"
                     git config user.name "SpoorthyUnayak"
@@ -54,7 +54,13 @@ pipeline {
                     sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                     git add kubernetesProject/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    if (params.DEPLOY_ENV == 'dev') {
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
+                        } else if (params.DEPLOY_ENV == 'preProd') {
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
+                        } else if (params.DEPLOY_ENV == 'production') {
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                        }
                 '''
             }
         }
