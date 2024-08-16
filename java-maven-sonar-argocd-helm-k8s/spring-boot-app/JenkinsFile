@@ -12,7 +12,7 @@ pipeline {
         }
       steps {
        // sh 'echo passed'
-        git branch: "${BRANCH_NAME}", url: "https://${GITHUB_TOKEN}github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git"
+        git branch: "${BRANCH_NAME}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git"
       }
     }
     stage('Build and Test') {
