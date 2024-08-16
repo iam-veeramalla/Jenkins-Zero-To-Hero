@@ -64,7 +64,7 @@ pipeline {
                             echo "preProd branch is ReleaseBranchPP in GitOps"
                             git checkout ReleaseBranchPP
                             ls 
-                            cat kubernetesProject/deployment.yml
+                            cat deployment.yml
                             sed -i "s/46/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                             cat kubernetesProject/deployment.yml
                             git add kubernetesProject/deployment.yml
