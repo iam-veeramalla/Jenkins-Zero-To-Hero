@@ -48,10 +48,10 @@ pipeline {
                  sh '''
                     git config user.email "spoorthyunayak@gmail.com"
                     git config user.name "SpoorthyUnayak"
-                    BUILD_NUMBER=${BUILD_NUMBER}             
-                    cd gitOpsProject                    
-                    
-                    if [ "${DEPLOY_ENV}" = "dev" ]; then                       
+                    BUILD_NUMBER=${BUILD_NUMBER}            
+                                       
+                    if [ "${DEPLOY_ENV}" = "dev" ]; then
+                            cd gitOpsProject
                             echo "dev branch is ReleaseBranchDev in GitOps" 
                             git checkout ReleaseBranchDev
                             ls kubernetesProject/ 
@@ -61,12 +61,13 @@ pipeline {
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                             git push -f https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
                     elif [ "${DEPLOY_ENV}" = "preProd" ]; then
+                            cd GitOpsPreprod
                             echo "preProd branch is ReleaseBranchPP in GitOps"
                             git checkout ReleaseBranchPP
                             ls
-                            cat deployment.yml
-                            sed -i "s/replaceImageTag/spoorthynayak/docker_image:${BUILD_NUMBER}/g" deployment.yml
-                            git add deployment.yml
+                            cat kubernetesProject/deployment.yml
+                            sed -i "s/ImageTag/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
+                            git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                             git push -f https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
                    elif [ "${DEPLOY_ENV}" = "production" ]; then
