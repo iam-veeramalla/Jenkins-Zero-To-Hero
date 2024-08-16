@@ -63,7 +63,7 @@ pipeline {
                     elif [ "${DEPLOY_ENV}" = "preProd" ]; then
                             echo "preProd branch is ReleaseBranchPP in GitOps"
                             git checkout ReleaseBranchPP
-                            ls kubernetesProject/
+                            ls ReleaseBranchPP/kubernetesProject
                             cat kubernetesProject/deployment.yml
                             sed -i "s/46/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                             cat kubernetesProject/deployment.yml
