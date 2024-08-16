@@ -41,6 +41,8 @@ pipeline {
                     git config user.email "spoorthyunayak@gmail.com"
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}
+                    // Remove the existing directory if it exists
+                    sh 'rm -rf gitOpsProject'
                     git clone https://github.com/SpoorthyUnayak/gitOpsProject
                     cd gitOpsProject
                     sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
