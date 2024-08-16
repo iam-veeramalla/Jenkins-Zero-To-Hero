@@ -49,26 +49,20 @@ pipeline {
                     git config user.email "spoorthyunayak@gmail.com"
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}             
-                    cd gitOpsProject                    
+                    cd gitOpsProject
+                    sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
+                    git add kubernetesProject/deployment.yml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     if [ "${DEPLOY_ENV}" = "dev" ]; then                          
-                            echo "dev branch is ReleaseBranchDev in GitOps"
-                           sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
-                           git add kubernetesProject/deployment.yml
-                            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                           git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
+                            echo "dev branch is ReleaseBranchDev in GitOps"                           
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
                     elif [ "${DEPLOY_ENV}" = "preProd" ]; then
-                          echo "preProd branch is ReleaseBranchPP in GitOps"
-                         sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
-                         git add kubernetesProject/deployment.yml
-                         git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                          echo "preProd branch is ReleaseBranchPP in GitOps"                         
                           git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchPP
                    elif [ "${DEPLOY_ENV}" = "production" ]; then
                             echo "production branch is main in GitOps"
-                          sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
-                          git add kubernetesProject/deployment.yml
-                           git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-                       fi
+                   fi
                 '''
             }
         }
