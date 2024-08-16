@@ -59,7 +59,7 @@ pipeline {
                             cat kubernetesProject/deployment.yml
                             git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
+                            git push origin ReleaseBranchDev
                     elif [ "${DEPLOY_ENV}" = "preProd" ]; then
                             echo "preProd branch is ReleaseBranchPP in GitOps"
                             git checkout ReleaseBranchPP
