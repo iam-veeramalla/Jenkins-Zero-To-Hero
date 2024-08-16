@@ -55,7 +55,7 @@ pipeline {
                             echo "dev branch is ReleaseBranchDev in GitOps" 
                             git checkout ReleaseBranchDev
                             ls kubernetesProject/ 
-                            sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
+                            sed -i "s/16/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                             cat kubernetesProject/deployment.yml
                             git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
