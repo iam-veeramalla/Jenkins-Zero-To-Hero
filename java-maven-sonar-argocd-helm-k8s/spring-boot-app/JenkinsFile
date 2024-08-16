@@ -41,8 +41,7 @@ pipeline {
                     git config user.email "spoorthyunayak@gmail.com"
                     git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    sh 'ls -la'
-                    sh 'git clone --depth 1 https://${GITHUB_TOKEN}github.com/SpoorthyUnayak/gitOpsProject.git'
+                    git clone --depth 1 https://${GITHUB_TOKEN}github.com/SpoorthyUnayak/gitOpsProject.git
                     cd gitOpsProject
                     sed -i "s/tagname/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
                     git add kubernetesProject/deployment.yml
