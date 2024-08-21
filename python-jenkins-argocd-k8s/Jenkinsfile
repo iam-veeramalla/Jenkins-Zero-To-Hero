@@ -1,6 +1,11 @@
 pipeline {
     
-    agent any 
+    agent {
+        docker { 
+            image 'python:3.9-slim'
+            args '-e BUILD_NUMBER=${BUILD_NUMBER}' // Pass BUILD_NUMBER to the Docker container
+        }
+    }
     
     environment {
         IMAGE_TAG = "${BUILD_NUMBER}"
