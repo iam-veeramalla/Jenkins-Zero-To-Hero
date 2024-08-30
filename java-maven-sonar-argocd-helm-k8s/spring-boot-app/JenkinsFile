@@ -40,7 +40,7 @@ pipeline {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
             def dockerImage = docker.image("${DOCKER_IMAGE}")
             docker.withRegistry('https://hub.docker.com/repository/docker/indra605/v1/', "docker-cred") {
-                docker.image("https://hub.docker.com/repository/docker/indra605/v1/${DOCKER_IMAGE}").push()
+            sh 'docker push ${DOCKER_IMAGE}'
             }
         }
       }
