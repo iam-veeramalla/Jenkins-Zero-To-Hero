@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://54.165.199.201:9000/"
+        SONAR_URL = "http://54.165.199.201/:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -39,12 +39,9 @@ pipeline {
         script {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
             def dockerImage = docker.image("${DOCKER_IMAGE}")
-             // This step should not normally be used in your script. Consult the inline help for details.
-withDockerRegistry(credentialsId: 'docker-cred', url: 'https://hub.docker.com/') {
-    // some block
-}
-            sh 'docker push ${DOCKER_IMAGE}'
-            
+            docker.withRegistry('https://hub.docker.com/r/indra605/v1', "docker-cred") {
+                dockerImage.push()
+            }
         }
       }
     }
