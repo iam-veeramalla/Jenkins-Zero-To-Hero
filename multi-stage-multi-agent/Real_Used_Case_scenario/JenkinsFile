@@ -1,0 +1,137 @@
+pipeline {
+    agent none  // Define specific agents in each stage
+
+    stages {
+        stage('Build Web Tier') {
+            agent {
+                docker {
+                    image 'openjdk:17-jdk'  // Java Docker image
+                }
+            }
+            steps {
+                echo 'Building Web Tier...'
+                // Assuming a Maven-based Java project
+                sh 'mvn clean compile'  // Compile the Java project
+                sh 'mvn package'  // Package the Java project (produces a .jar or .war file)
+            }
+        }
+
+        stage('Test Web Tier') {
+            agent {
+                docker {
+                    image 'openjdk:17-jdk'  // Java Docker image
+                }
+            }
+            steps {
+                echo 'Testing Web Tier...'
+                // Run tests using Maven
+                sh 'mvn test'  // Execute unit tests
+                sh 'mvn verify'  // Verify the results, including integration tests if any
+            }
+        }
+
+        stage('Build Application Tier') {
+            agent {
+                docker {
+                    image 'node:18'  // Node.js Docker image
+                }
+            }
+            steps {
+                echo 'Building Application Tier...'
+                // Assuming a Node.js project with npm
+                sh 'npm install'  // Install dependencies
+                sh 'npm run build'  // Build the application (if using a build tool)
+            }
+        }
+
+        stage('Test Application Tier') {
+            agent {
+                docker {
+                    image 'node:18'  // Node.js Docker image
+                }
+            }
+            steps {
+                echo 'Testing Application Tier...'
+                // Run tests using npm
+                sh 'npm test'  // Run the test suite defined in package.json
+            }
+        }
+
+        stage('Build Database Tier') {
+            agent {
+                docker {
+                    image 'mariadb:latest'  // SQL Docker image (MariaDB)
+                }
+            }
+            steps {
+                echo 'Building Database Tier...'
+                // For databases, this typically involves preparing schema or seed data
+                // Example script to initialize the database (customize as needed)
+                sh 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" < init-database.sql'
+            }
+        }
+
+        stage('Test Database Tier') {
+            agent {
+                docker {
+                    image 'mariadb:latest'  // SQL Docker image (MariaDB)
+                }
+            }
+            steps {
+                echo 'Testing Database Tier...'
+                // Example script to run tests or validate database schema
+                // This could involve connecting to the database and running queries
+                sh 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" < test-database.sql'
+            }
+        }
+
+        stage('Deploy Web Tier') {
+            agent {
+                docker {
+                    image 'openjdk:17-jdk'  // Java Docker image
+                }
+            }
+            steps {
+                echo 'Deploying Web Tier...'
+                // Deployment commands for the Web Tier
+                sh 'scp target/myapp.jar user@server:/path/to/deploy'  // Example SCP command
+                sh 'ssh user@server "systemctl restart myapp"'  // Example SSH command to restart the application
+            }
+        }
+
+        stage('Deploy Application Tier') {
+            agent {
+                docker {
+                    image 'node:18'  // Node.js Docker image
+                }
+            }
+            steps {
+                echo 'Deploying Application Tier...'
+                // Deployment commands for the Application Tier
+                sh 'scp -r dist/* user@server:/path/to/deploy'  // Example SCP command
+                sh 'ssh user@server "pm2 restart myapp"'  // Example SSH command to restart the Node.js application
+            }
+        }
+
+        stage('Deploy Database Tier') {
+            agent {
+                docker {
+                    image 'mariadb:latest'  // SQL Docker image (MariaDB)
+                }
+            }
+            steps {
+                echo 'Deploying Database Tier...'
+                // Database deployment commands (e.g., applying schema changes)
+                sh 'mysql -u root -p"$MYSQL_ROOT_PASSWORD" < deploy-database.sql'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            // Cleanup steps, if necessary
+            // For example, remove temporary files or notify stakeholders
+        }
+    }
+}
