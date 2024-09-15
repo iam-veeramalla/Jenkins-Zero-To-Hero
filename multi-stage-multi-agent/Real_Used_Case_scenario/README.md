@@ -36,6 +36,9 @@ Database Tier:
 Uses mysql to apply any database changes or schema updates.
 
 Customization:
+
 Scripts and Commands: Ensure the scripts (e.g., build-web.sh, test-web.sh) and deployment commands are adapted to fit your actual build and deployment processes.
+
 Credentials: Securely manage credentials (e.g., database passwords) using Jenkins credentials management rather than hard-coding them in scripts.
+
 This pipeline setup should give you a comprehensive framework to manage builds, tests, and deployments across different tiers of your application using Docker containers for isolated and consistent environments.
