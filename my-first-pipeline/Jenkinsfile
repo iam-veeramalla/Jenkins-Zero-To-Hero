@@ -13,15 +13,15 @@ pipeline {
       steps {
         sh 'echo "bruce"'
         sh 'touch k.txt'
-        cat k.txt
+        sh 'cat k.txt'
       }
     }
   
-   stage('echo') {
+   stage('mcho') {
       steps {
         sh 'echo "bruce"'
-        sh 'touch k.txt'
-        cat k.txt
+        sh 'touch m.txt'
+        sh 'cat m.txt'
       }
     }
   }
