@@ -8,5 +8,21 @@ pipeline {
         sh 'node --version'
       }
     }
+    
+    stage('echo') {
+      steps {
+        sh 'echo "bruce"'
+        sh 'touch k.txt'
+        sh 'cat k.txt'
+      }
+    }
+  
+   stage('mcho') {
+      steps {
+        sh 'echo "bruce"'
+        sh 'touch m.txt'
+        sh 'cat m.txt'
+      }
+    }
   }
 }
