@@ -1,8 +1,4 @@
 pipeline {
-  agent none
-  stages {
-    stage('Back-end') {
-    pipeline {
     agent any
     
     tools {
@@ -48,15 +44,4 @@ pipeline {
             cleanWs()
         }
     }
-}
-
-    stage('Front-end') {
-      agent {
-        docker { image 'node:16-alpine' }
-      }
-      steps {
-        sh 'node --version'
-      }
-    }
-  }
 }
