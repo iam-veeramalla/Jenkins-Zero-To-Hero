@@ -5,7 +5,7 @@ pipeline {
             agent any
             steps {
                 // Checkout the code from the Git repository
-               git url: 'https://github.com/Swapnil-070904/Jenkins-Zero-To-Hero', branch: 'java_app'
+               git url: 'https://github.com/Swapnil-070904/Jenkins-Zero-To-Hero'
             }
         }
         stage('Back-end Build & Test') {
