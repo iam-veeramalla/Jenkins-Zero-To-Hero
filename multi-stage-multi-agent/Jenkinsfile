@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('Back-end') {
+    stage('Backend') {
       agent {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
@@ -9,12 +9,20 @@ pipeline {
         sh 'mvn --version'
       }
     }
-    stage('Front-end') {
+    stage('Frontend') {
       agent {
         docker { image 'node:16-alpine' }
       }
       steps {
         sh 'node --version'
+      }
+    }
+    stage('Database') {
+      agent {
+        docker { image 'mysql:latest' }
+      }
+      steps {
+        echo 'Mock done'
       }
     }
   }

@@ -7,6 +7,14 @@ pipeline {
       steps {
         sh 'node --version'
       }
+      post {
+        success {
+          echo 'Node version successfully retrieved.'
+        }
+        failure {
+          echo 'Error retrieving Node version.'
+        }
+      }
     }
   }
 }
