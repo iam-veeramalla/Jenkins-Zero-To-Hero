@@ -1,7 +1,8 @@
 pipeline {
   agent {label : "agent" }
   parameters {
-        string(name: 'BRANCH_NAME', description: 'Branch to deploy from')
+        //string(name: 'BRANCH_NAME', description: 'Branch to deploy from')
+        echo "branchName ${branchName}"
         choice(name: 'DEPLOY_ENV', choices: ['dev', 'preProd', 'production'], description: 'Environment to deploy to')
     }
   stages {
@@ -12,7 +13,7 @@ pipeline {
         }
       steps {
        // sh 'echo passed'
-        git branch: "${BRANCH_NAME}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}"
+        git branch: "${branchName}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}"
       }
     }
     stage('Build and Test') {
