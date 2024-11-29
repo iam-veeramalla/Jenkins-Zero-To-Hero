@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'your-credentials-id',
+                    
                     url: 'https://github.com/sheshdhar3/Veeramalla-Jenkins-Zero-To-Hero.git'
             }
         }
