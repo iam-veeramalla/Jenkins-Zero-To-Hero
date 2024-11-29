@@ -23,9 +23,11 @@ pipeline {
         stage('Build Docker') {
             steps {
                 script {
+                    dir('https://github.com/sheshdhar3/Veeramalla-Jenkins-Zero-To-Hero/edit/main/python-jenkins-argocd-k8s') {
+                     echo "Building Docker Image"
+                     sh 'docker build -t sheshdhar3-cicd-e2e:${BUILD_NUMBER} .'
+                    }
                     
-                    echo "Building Docker Image"
-                    sh 'docker build -t sheshdhar3-cicd-e2e:${BUILD_NUMBER} .'
                     
                 }
             }
