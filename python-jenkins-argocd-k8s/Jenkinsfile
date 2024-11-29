@@ -1,51 +1,36 @@
 pipeline {
-    
-    agent any 
-    
-    environment {
-        IMAGE_TAG = "${BUILD_NUMBER}"
-    }
-    
+    agent any
     stages {
-        
-        stage('Checkout'){
-           steps {
-                // git credentialsId: 'f87a34a8-0e09-45e7-b9cf-6dc68feac670', 
-                
-                git url: 'https://github.com/sheshdhar3/Veeramalla-Jenkins-Zero-To-Hero.git',
-                branch: 'main'
-
-                }
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'your-credentials-id',
+                    url: 'https://github.com/your-repo-url.git'
+            }
         }
 
-        stage('Clean Workspace') {
-           steps {
-               deleteDir()
-              }
-            }
-
-      
-        stage('Build Docker'){
-            steps{
-                script{
+        stage('Debug Workspace') {
+            steps {
+                script {
                     sh '''
-                    echo 'Build Docker Image'
-                    docker build -t sheshdhar3-cicd-e2e:${BUILD_NUMBER} .
+                    echo "Workspace contents:"
+                    ls -l
                     '''
                 }
             }
         }
 
-            
-        stage('Checkout K8S manifest SCM'){
+        stage('Build Docker') {
             steps {
-                // git credentialsId: 'f87a34a8-0e09-45e7-b9cf-6dc68feac670', 
-                sh '''
-                git url: 'https://github.com/sheshdhar3/Veeramalla-Jenkins-Zero-To-Hero.git',
-                branch: 'main'
-                '''
+                script {
+                    sh '''
+                    echo "Building Docker Image"
+                    docker build -t sheshdhar3-cicd-e2e:${BUILD_NUMBER} .
+                    '''
+                }
             }
         }
-        
-      }
+    }
 }
+
+
