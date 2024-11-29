@@ -23,10 +23,10 @@ pipeline {
         stage('Build Docker') {
             steps {
                 script {
-                    sh '''
+                    
                     echo "Building Docker Image"
-                    docker build -t sheshdhar3-cicd-e2e:${BUILD_NUMBER} .
-                    '''
+                    sh 'docker build -t sheshdhar3-cicd-e2e:${BUILD_NUMBER} .'
+                    
                 }
             }
         }
