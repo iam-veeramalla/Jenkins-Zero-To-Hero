@@ -14,9 +14,17 @@ pipeline {
                 
                 git url: 'https://github.com/sheshdhar3/Veeramalla-Jenkins-Zero-To-Hero.git',
                 branch: 'main'
-                
-           }
+
+                }
         }
+
+        stage('Clean Workspace') {
+           steps {
+               deleteDir()
+              }
+            }
+
+      
         stage('Build Docker'){
             steps{
                 script{
