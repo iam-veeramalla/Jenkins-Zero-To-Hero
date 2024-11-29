@@ -28,17 +28,7 @@ pipeline {
             }
         }
 
-        stage('Push the artifacts'){
-           steps{
-                script{
-                    //sh '''
-                    // echo 'Push to Repo'
-                    //docker push sheshdhar3/cicd-e2e:${BUILD_NUMBER}
-                    //'''
-                }
-            }
-        }
-        
+            
         stage('Checkout K8S manifest SCM'){
             steps {
                 // git credentialsId: 'f87a34a8-0e09-45e7-b9cf-6dc68feac670', 
@@ -49,5 +39,5 @@ pipeline {
             }
         }
         
-       }
+      }
 }
