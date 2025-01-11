@@ -9,8 +9,13 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/ganesh55655555/Jenkins-Zero-To-Hero.git'
+        retry(3) {  // Retry the checkout step 3 times if it fails
+          script {
+            sh 'echo passed'
+            // You can uncomment the next line if you want to checkout the repository
+            // git branch: 'main', url: 'https://github.com/ganesh55655555/Jenkins-Zero-To-Hero.git'
+          }
+        }
       }
     }
     stage('Build and Test') {
@@ -33,7 +38,6 @@ pipeline {
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "ganeshkumar55/ultimate-cicd:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
