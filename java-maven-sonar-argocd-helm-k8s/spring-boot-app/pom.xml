@@ -67,5 +67,5 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-        </plugi
+        </plugin>
 
