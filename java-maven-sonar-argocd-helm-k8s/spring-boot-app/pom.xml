@@ -11,6 +11,11 @@
     <name>spring-boot-demo</name>
     <url></url>
 
+    <description>
+        My name is Ganeshkumar, and I have successfully implemented this CI/CD pipeline.
+        I would like to thank Abhishek for providing us with this wonderful project.
+    </description>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -25,7 +30,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -39,18 +43,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- debugging -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-
     </dependencies>
 
     <build>
-
         <finalName>spring-boot-web</finalName>
 
         <plugins>
@@ -67,9 +67,5 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+        </plugi
 
-        </plugins>
-    </build>
-
-
-</project>
