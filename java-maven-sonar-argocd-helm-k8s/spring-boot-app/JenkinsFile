@@ -58,7 +58,7 @@ pipeline {
                     BUILD_NUMBER=${BUILD_NUMBER}
                     sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
                     git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git remote set-url https://$GITHUB_USER::${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}
+                    git remote set-url origin https://$GITHUB_USER:$GITHUB_TOKEN@github.com/Mfariyaj/Spring-Boot-app.git
                     git push origin HEAD:master
                 '''
             }
