@@ -1,17 +1,28 @@
 pipeline {
-  agent {
-    docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+  agent any {
+    environment {
+        IMAGE_NAME = 'sanjeevkt720/jenkins-flask-app'
+        IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
+        AWS_ACCESS_KEY_ID = credentials('AAKIATCKAQAXYMLTZTBMU')
+        AWS_SECRET_ACCESS_KEY = credentials('xb3s8h4yOIRp8BRMMXALGq9jwk7RJTh4KEGv9cqZ')
+        GH_TOKEN = credentials('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')
     }
+    stages {
+        stage('environment variables') {
+            steps {
+                sh 'printenv'
+                sh 'ls -la'
+            }
+        }
   }
-  stages {
-    stage('Checkout') {
-      steps {
-        sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
-      }
-    }
+  stage('Pull Request Number') {
+            when {
+                changeRequest target: 'main'
+            }
+            steps {
+                echo "PR: ${CHANGE_ID}"
+            }
+        }    
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
