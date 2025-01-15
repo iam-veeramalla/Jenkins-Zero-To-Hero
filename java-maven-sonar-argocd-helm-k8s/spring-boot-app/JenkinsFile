@@ -3,7 +3,6 @@ pipeline {
     environment {
         IMAGE_NAME = 'sanjeevkt720/jenkins-flask-app'
         IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
-        GH_TOKEN = credentials('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')
     }
     stages {
         stage('environment variables') {
