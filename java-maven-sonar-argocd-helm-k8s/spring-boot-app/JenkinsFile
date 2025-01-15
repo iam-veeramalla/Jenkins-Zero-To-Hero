@@ -3,8 +3,6 @@ pipeline {
     environment {
         IMAGE_NAME = 'sanjeevkt720/jenkins-flask-app'
         IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
-        AWS_ACCESS_KEY_ID = credentials('AAKIATCKAQAXYMLTZTBMU')
-        AWS_SECRET_ACCESS_KEY = credentials('xb3s8h4yOIRp8BRMMXALGq9jwk7RJTh4KEGv9cqZ')
         GH_TOKEN = credentials('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')
     }
     stages {
