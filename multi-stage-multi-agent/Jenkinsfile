@@ -1,21 +1,22 @@
 pipeline {
-  agent none
-  stages {
-    stage('Back-end') {
-      agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
-      }
-      steps {
-        sh 'mvn --version'
-      }
+    agent none
+    stages {
+        stage('Checkout Code') {
+            agent any
+            steps {
+                // Checkout the code from the Git repository
+               git url: 'https://github.com/Swapnil-070904/Jenkins-Zero-To-Hero'
+            }
+        }
+        stage('Back-end Build & Test') {
+            agent {
+                docker { image 'maven:3.8.1-adoptopenjdk-11' }
+            }
+            steps {
+                sh 'mvn clean compile'
+                sh 'mvn test'
+            }
+        }
     }
-    stage('Front-end') {
-      agent {
-        docker { image 'node:16-alpine' }
-      }
-      steps {
-        sh 'node --version'
-      }
-    }
-  }
 }
+
