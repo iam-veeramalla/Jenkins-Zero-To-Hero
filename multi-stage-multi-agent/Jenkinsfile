@@ -7,6 +7,10 @@ pipeline {
       }
       steps {
         sh 'mvn --version'
+        sh 'mvn clean install'
+        sh 'echo "public class HelloWorld { public static void main(String[] args) { System.out.println(\"Hello, World from Java!\"); } }" > HelloWorld.java'
+        sh 'javac HelloWorld.java'
+        sh 'java HelloWorld'
       }
     }
     stage('Front-end') {
@@ -15,6 +19,9 @@ pipeline {
       }
       steps {
         sh 'node --version'
+        sh 'npm install'
+        sh 'echo "console.log(\"Hello, World from Node.js!\")" > hello.js'
+        sh 'node hello.js'
       }
     }
   }
