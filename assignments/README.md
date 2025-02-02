@@ -1,7 +1,6 @@
-Creating a folder dedicated to assignment so that the Repo is Clean
-And hopefully PR can be accepted.
+# Created a folder dedicated to assignment so that the Repo is Clean
 
-## Fork and Make changes push to your Forked repo, and then compare and create a pull request.
+## Fork and Make changes, push them to your Forked repo, and then compare and create a pull request.
 
 ## or
 
