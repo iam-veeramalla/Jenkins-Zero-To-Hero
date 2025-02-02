@@ -1,0 +1,34 @@
+pipeline {
+  agent none
+  stages {
+    stage('Python Test') {
+      agent {
+        docker { image 'python:3.10' }
+      }
+      steps {
+        sh 'python --version'
+        sh 'echo "print(\\"Hello, Python!\\")" | python'
+      }
+    }
+    stage('Node.js Test') {
+      agent {
+        docker { image 'node:16-alpine' }
+      }
+      steps {
+        sh 'node --version'
+        sh 'echo "console.log(\\"Hello, Node.js!\\")" | node'
+      }
+    }
+    stage('Go Test') {
+      agent {
+        docker { image 'golang:1.18' }
+      }
+      steps {
+        sh 'go version'
+        sh 'echo "package main; import \\"fmt\\"; func main() { fmt.Println(\\"Hello, Go!\\") }" > main.go && go run main.go'
+      }
+    }
+  }
+}
+
+
