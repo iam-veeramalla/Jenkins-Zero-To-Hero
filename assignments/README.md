@@ -1,26 +1,39 @@
-# Created a folder dedicated to assignment so that the Repo is Clean
+# Assignment Workflow
 
-## Fork and Make changes, push them to your Forked repo, and then compare and create a pull request.
+**1. Clean Repository Setup:**
 
-## or
+* Create a dedicated folder for this assignment to keep your local projects organized.
 
-## Use the Gitbash CLI command:
+**2. Fork and Make Changes:**
 
-To create a pull request (PR) in Git using the command line, you would typically use the command "gh pr create" which is part of the GitHub CLI,  
-specifying the base branch you want to merge into and the head branch containing your changes with flags like --base and --head respectively;  
-you can also add a title and description using --title and --body options.
+* Fork the repository you're working on to your own GitHub account.
+* Clone your forked repository to your local machine.
+* Make the necessary changes to the code.
+* Commit your changes with descriptive commit messages.
+* Push your changes to your forked repository on GitHub.
 
-## Example:
+**3. Create a Pull Request:**
 
-```gh
-gh pr create --base main --head feature-branch --title "Added new feature" --body "This pull request adds a new feature to the application."
-```
+* **Option 1: GitHub Web Interface**
+    * Go to your forked repository on GitHub.
+    * Click the "Compare & pull request" button.
+    * Select the base branch (usually "main" or "develop") and your feature branch.
+    * Provide a clear and concise title and description for your pull request.
+    * Submit the pull request.
 
-```
-Explanation:
-gh pr create: Initiates the process of creating a pull request.
---base main: Specifies the "main" branch as the target branch where your changes will be merged.
---head feature-branch: Identifies the branch ("feature-branch") containing your changes that will be pulled into the main branch.
---title "Added new feature": Sets the title of your pull request.
---body "This pull request adds a new feature to the application.": Adds a descriptive body explaining your changes.
-```
+* **Option 2: GitHub CLI**
+
+    Use the following command to create a pull request from the command line:
+
+    ```bash
+    gh pr create --base main --head feature-branch --title "Your Pull Request Title" --body "Your Pull Request Description"
+    ```
+
+    * Replace `main` with the actual base branch name.
+    * Replace `feature-branch` with the name of your feature branch.
+    * Provide a clear and concise title and description for your pull request.
+
+**Example:**
+
+```bash
+gh pr create --base main --head feature-branch-new-feature --title "Added new feature - User authentication" --body "This pull request adds user authentication functionality to the application."
