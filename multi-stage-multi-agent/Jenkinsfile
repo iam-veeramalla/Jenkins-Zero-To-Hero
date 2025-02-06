@@ -1,21 +1,47 @@
 pipeline {
-  agent none
-  stages {
-    stage('Back-end') {
-      agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
-      }
-      steps {
-        sh 'mvn --version'
-      }
+    agent any
+    
+    tools {
+        maven 'Maven install 3.8.1'  // Specify the Maven version installed on your Jenkins server
     }
-    stage('Front-end') {
-      agent {
-        docker { image 'node:16-alpine' }
-      }
-      steps {
-        sh 'node --version'
-      }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the repository
+                git 'https://your-git-repository-url.git'  // Replace with your actual Git repo
+            }
+        }
+        stage('Build') {
+            steps {
+                // Compile and build the Maven project
+                sh 'mvn clean compile'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run unit tests (if any exist)
+                sh 'mvn test'
+            }
+        }
+        stage('Package') {
+            steps {
+                // Package the application into a JAR file
+                sh 'mvn package'
+            }
+        }
+        stage('Run Application') {
+            steps {
+                // Run the packaged application (just for demo)
+                sh 'java -cp target/hello-world-1.0-SNAPSHOT.jar com.example.HelloWorld'
+            }
+        }
     }
-  }
+    
+    post {
+        always {
+            // Clean workspace after build
+            cleanWs()
+        }
+    }
 }
