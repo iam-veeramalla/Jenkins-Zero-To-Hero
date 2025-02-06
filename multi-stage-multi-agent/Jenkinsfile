@@ -1,21 +1,24 @@
 pipeline {
-  agent none
-  stages {
-    stage('Back-end') {
-      agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
-      }
-      steps {
-        sh 'mvn --version'
-      }
+    agent none
+    stages {
+        stage('Back-end') {
+            agent {
+                docker { image 'openjdk:11-jdk-slim' }
+            }
+            steps {
+                sh 'java -version'
+                sh 'javac HelloWorld.java'
+                sh 'java HelloWorld'
+            }
+        }
+        stage('Front-end') {
+            agent {
+                docker { image 'node:16-alpine' }
+            }
+            steps {
+                sh 'node --version'
+            }
+        }
     }
-    stage('Front-end') {
-      agent {
-        docker { image 'node:16-alpine' }
-      }
-      steps {
-        sh 'node --version'
-      }
-    }
-  }
 }
+
