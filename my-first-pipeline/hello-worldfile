@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // In a real project, you might check out your code repository here
+                echo "Checking out code..."
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // In a real project, you might compile/build your code here
+                echo "Building code..."
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // In a real project, you might run your tests here
+                echo "Running tests..."
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // In a real project, you might deploy your application here
+                echo "Deploying application..."
+            }
+        }
+        
+        stage('Verify') {
+            steps {
+                // In a real project, you might perform verification tasks here
+                echo "Verifying deployment..."
+            }
+        }
+        
+        stage('Hello World') {
+            steps {
+                // Print Hello, World!
+                echo "Hello, World!"
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo "Pipeline executed successfully!"
+        }
+        
+        failure {
+            echo "Pipeline execution failed!"
+        }
+        
+        always {
+            // Clean up or post-execution tasks can go here
+            echo "Pipeline execution completed."
+        }
+    }
+}
