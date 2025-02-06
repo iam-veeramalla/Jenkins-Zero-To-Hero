@@ -1,0 +1,14 @@
+if we use linux/arm64 argitecture then docker file should like below 
+
+# Use the official OpenJDK 11 Alpine image for ARM 64-bit
+FROM adoptopenjdk:11-jdk-hotspot-bionic
+
+# Simply the artifact path
+ARG artifact=target/spring-boot-web.jar
+
+WORKDIR /opt/app
+
+COPY ${artifact} app.jar
+
+# This should not be changed
+ENTRYPOINT ["java","-jar","app.jar"]
