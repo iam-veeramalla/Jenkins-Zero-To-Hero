@@ -1,0 +1,69 @@
+pipeline {
+    agent none
+    
+    stages {
+        stage('Create Applications') {
+            agent any
+            steps {
+                script {
+                    // Create backend directory
+                    sh 'mkdir -p backend'
+                    
+                    // Create Java Hello World Application
+                    sh '''
+                        cat <<EOF > backend/HelloWorld.java
+                        public class HelloWorld {
+                            public static void main(String[] args) {
+                                System.out.println("Hello, World! from Java");
+                            }
+                        }
+EOF
+                    '''
+                    
+                    // Create frontend directory
+                    sh 'mkdir -p frontend'
+                    
+                    // Create Node.js Hello World Application
+                    sh '''
+                        cat <<EOF > frontend/app.js
+                        console.log('Hello, World! from Node.js');
+EOF
+                    '''
+                }
+            }
+        }
+        
+        stage('Back-end') {
+            agent {
+                docker { 
+                    image 'maven:3.8.1-adoptopenjdk-11'
+                }
+            }
+            steps {
+                script {
+                    // Compile and run the Java application
+                    dir('backend') {
+                        sh 'javac HelloWorld.java'
+                        sh 'java HelloWorld'
+                    }
+                }
+            }
+        }
+        
+        stage('Front-end') {
+            agent {
+                docker { 
+                    image 'node:16-alpine'
+                }
+            }
+            steps {
+                script {
+                    // Run the Node.js application
+                    dir('frontend') {
+                        sh 'node app.js'
+                    }
+                }
+            }
+        }
+    }
+}
