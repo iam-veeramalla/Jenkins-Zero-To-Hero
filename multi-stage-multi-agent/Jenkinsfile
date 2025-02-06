@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Back-end') {
       agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
+        docker { image 'maven:3.8.1-adoptopenjdk-16' }
       }
       steps {
         sh 'mvn --version'
@@ -17,5 +17,21 @@ pipeline {
         sh 'node --version'
       }
     }
-  }
+    stage('build') {
+      agent { 
+        docker { image 'ruby:3.3.5-alpine3.20' } 
+      }
+      steps {
+        sh 'ruby --version'
+      }
+    }
+      stage('language') {
+        agent { 
+          docker { image 'python:3.13.0-alpine3.20' } 
+              }  
+        steps {
+              sh 'python --version'
+      }
+    }
+}
 }
