@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
   environment {
@@ -36,7 +36,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+            sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${env.DOCKER_IMAGE} .'
         }
       }
     }
@@ -52,7 +52,7 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         script {
-            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            def dockerImage = docker.image("${env.DOCKER_IMAGE}")
             docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                 dockerImage.push()
             }
@@ -69,7 +69,6 @@ pipeline {
           sh '''
             git config user.email "abhishek.xyz@gmail.com"
             git config user.name "Abhishek Veeramalla"
-            BUILD_NUMBER=${BUILD_NUMBER}
             sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
             git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
@@ -81,7 +80,6 @@ pipeline {
   }
   post {
     always {
-      // Clean up after the build
       cleanWs()
     }
   }
