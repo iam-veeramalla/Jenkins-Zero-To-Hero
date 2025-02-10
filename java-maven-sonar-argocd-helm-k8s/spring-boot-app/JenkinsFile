@@ -5,6 +5,10 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
+  environment {
+    DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
+    REGISTRY_CREDENTIALS = credentials('docker-cred')
+  }
   stages {
     stage('Checkout') {
       steps {
@@ -30,10 +34,6 @@ pipeline {
       }
     }
     stage('Build Docker Image') {
-      environment {
-        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
-      }
       steps {
         script {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
@@ -50,9 +50,6 @@ pipeline {
       }
     }
     stage('Push Docker Image') {
-      environment {
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
-      }
       steps {
         script {
             def dockerImage = docker.image("${DOCKER_IMAGE}")
