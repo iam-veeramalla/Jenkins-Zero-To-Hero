@@ -61,7 +61,9 @@ A: Again, there are multiple ways to achieve this,
    - Third-party Secret Management Tools: Jenkins can also be integrated with third-party secret management tools such as AWS Secrets Manager, Google Cloud Key Management Service, and Azure Key Vault.
 ```
 
-Q: What is latest version of Jenkins or which version of Jenkins are you using ?
+Q: What is latest version of Jenkins or which version of Jenkins are you using ? 
+2.492 Stable
+2.498 Weekly
 
 A: This is a very simple question interviewers ask to understand if you are actually using Jenkins day-to-day, so always be prepared for this.
 
