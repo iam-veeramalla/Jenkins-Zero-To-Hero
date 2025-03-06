@@ -43,8 +43,6 @@ stage('Build and Test') {
         steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {              
                  sh '''
-                 //   git config user.email "spoorthyunayak@gmail.com"
-                //    git config user.name "SpoorthyUnayak"
                     BUILD_NUMBER=${BUILD_NUMBER}            
                                        
                     if [ "${DEPLOY_ENV}" = "dev" ]; then
