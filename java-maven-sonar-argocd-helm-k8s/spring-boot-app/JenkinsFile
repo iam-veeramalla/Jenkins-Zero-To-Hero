@@ -12,7 +12,7 @@ pipeline {
       }
     } 
   }
-stage('Build and Test') {
+    stage('Build and Test') {
       steps {
         sh 'echo $PATH'
         // build the project and create a JAR file
@@ -35,7 +35,7 @@ stage('Build and Test') {
         }
       }
     }
-    stage('Update Deployment File') {
+     stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "gitOpsProject"
             GIT_USER_NAME = "SpoorthyUnayak"
