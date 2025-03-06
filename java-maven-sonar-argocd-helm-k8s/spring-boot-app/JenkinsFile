@@ -11,8 +11,8 @@ pipeline {
             GIT_USER_NAME = "SpoorthyUnayak"
         }
       steps {
-       // sh 'echo passed'
-        git branch: "${branchName}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}"
+       sh 'echo passed'
+       // git branch: "${branchName}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}"
       }
     }
     stage('Build and Test') {
