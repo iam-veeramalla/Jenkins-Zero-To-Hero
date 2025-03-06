@@ -11,7 +11,6 @@ pipeline {
        // git branch: "${branchName}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}"
       }
     } 
-  }
     stage('Build and Test') {
       steps {
         sh 'echo $PATH'
@@ -70,4 +69,5 @@ pipeline {
             }
         }
     }
+}
 }
