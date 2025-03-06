@@ -50,9 +50,12 @@ stage('Build and Test') {
                     if [ "${DEPLOY_ENV}" = "dev" ]; then
                             cd gitOpsProject
                             echo "dev branch is ReleaseBranchDev in GitOps" 
+                            echo "success"
                             git checkout ReleaseBranchDev
-                            ls kubernetesProject/ 
+                            ls kubernetesProject/
+                            echo "success2"
                             sed -i "s/spoorthynayak/docker_image:*/spoorthynayak/docker_image:${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
+                            echo "success3"
                             cat kubernetesProject/deployment.yml                            
                             git add kubernetesProject/deployment.yml
                             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
