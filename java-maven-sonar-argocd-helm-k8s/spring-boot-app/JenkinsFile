@@ -1,15 +1,18 @@
 pipeline {
-  agent {
-    docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+  agent { label 'workerNode' }
+  parameters {
+        string(name: 'BRANCH_NAME', description: 'Branch to deploy from')
+        choice(name: 'DEPLOY_ENV', choices: ['dev', 'preProd', 'production'], description: 'Environment to deploy to')
     }
-  }
   stages {
     stage('Checkout') {
+    environment {
+            GIT_REPO_NAME = "Jenkins"
+            GIT_USER_NAME = "SpoorthyUnayak"
+        }
       steps {
-        sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
+       // sh 'echo passed'
+        git branch: "${branchName}", url: "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}"
       }
     }
     stage('Build and Test') {
@@ -19,20 +22,10 @@ pipeline {
         sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn clean package'
       }
     }
-    stage('Static Code Analysis') {
-      environment {
-        SONAR_URL = "http://34.201.116.83:9000"
-      }
-      steps {
-        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
-        }
-      }
-    }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "abhishekf5/ultimate-cicd:${BUILD_NUMBER}"
-        // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
+        DOCKER_IMAGE = "spoorthynayak/docker_image:${BUILD_NUMBER}"
+        DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
@@ -40,26 +33,41 @@ pipeline {
             sh 'cd java-maven-sonar-argocd-helm-k8s/spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
             def dockerImage = docker.image("${DOCKER_IMAGE}")
             docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
-                dockerImage.push()
+            dockerImage.push()
             }
         }
       }
     }
     stage('Update Deployment File') {
         environment {
-            GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
-            GIT_USER_NAME = "iam-veeramalla"
+            GIT_REPO_NAME = "gitOpsProject"
+            GIT_USER_NAME = "SpoorthyUnayak"
         }
         steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "abhishek.xyz@gmail.com"
-                    git config user.name "Abhishek Veeramalla"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {              
+                 sh '''
+                    git config user.email "spoorthyunayak@gmail.com"
+                    git config user.name "SpoorthyUnayak"
+                    BUILD_NUMBER=${BUILD_NUMBER}            
+                                       
+                    if [ "${DEPLOY_ENV}" = "dev" ]; then
+                            cd gitOpsProject
+                            echo "dev branch is ReleaseBranchDev in GitOps" 
+                            git checkout ReleaseBranchDev
+                            ls kubernetesProject/ 
+                            sed -i "s/spoorthynayak/docker_image:*/spoorthynayak/docker_image:${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
+                            cat kubernetesProject/deployment.yml                            
+                            git add kubernetesProject/deployment.yml
+                            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                            git push -f https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:ReleaseBranchDev
+                   elif [ "${DEPLOY_ENV}" = "production" ]; then
+                            echo "production branch is main in GitOps"
+                            git checkout main
+                            sed -i "s/TagImage/${BUILD_NUMBER}/g" kubernetesProject/deployment.yml
+                            git add kubernetesProject/deployment.yml
+                            git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                            git push -f https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                   fi
                 '''
             }
         }
