@@ -2,9 +2,7 @@ pipeline {
   agent { label 'workerNode' }
   parameters {
         string(name: 'BRANCH_NAME', description: 'Branch to deploy from')
-        echo "branchName ${branchName}"
         choice(name: 'DEPLOY_ENV', choices: ['dev', 'preProd', 'production'], description: 'Environment to deploy to')
-        echo "deploy_env ${DEPLOY_ENV}"
     }
   stages {
     stage('Checkout') {
