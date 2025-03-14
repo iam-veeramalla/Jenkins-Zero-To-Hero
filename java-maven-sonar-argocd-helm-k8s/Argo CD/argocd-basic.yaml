@@ -1,6 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
   name: example-argocd
   labels:
     example: basic
