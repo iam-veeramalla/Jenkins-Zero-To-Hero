@@ -18,4 +18,9 @@ pipeline {
       }
     }
   }
-}
+}tage('Test') {
+            parallel {
+                stage('Back-end Tests') {
+                    agent {
+                        docker { image 'maven:3.8.1-adoptopenjdk-11' }
+                    }
