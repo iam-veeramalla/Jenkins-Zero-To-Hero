@@ -8,5 +8,44 @@ pipeline {
         sh 'node --version'
       }
     }
-  }
+  
+ }
 }
+
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git branch -r
+  origin/HEAD -> origin/main
+  origin/main
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git branch
+* main
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> 
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git checkout -b feuture-my-first-pipeline
+Switched to a new branch 'feuture-my-first-pipeline'
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> 
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git branch
+* feuture-my-first-pipeline
+  main
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git branch -r
+  origin/HEAD -> origin/main
+  origin/main
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git add .
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git commit -m "my first pipeline"
+[feuture-my-first-pipeline dcf51cb] my first pipeline
+ 1 file changed, 1 insertion(+)
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> git push origin feuture-my-first-pipeline
+info: please complete authentication in your browser...
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 404 bytes | 57.00 KiB/s, done.
+Total 4 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+remote: 
+remote: Create a pull request for 'feuture-my-first-pipeline' on GitHub by visiting:
+remote:      https://github.com/Manasareddy-dandu/Jenkins-Zero-To-Hero/pull/new/feuture-my-first-pipeline
+remote:
+To https://github.com/Manasareddy-dandu/Jenkins-Zero-To-Hero.git
+ * [new branch]      feuture-my-first-pipeline -> feuture-my-first-pipeline
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> 
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> 
+PS C:\Git-demo\Jenkins-Zero-To-Hero\my-first-pipeline> feuture-my-first-pipeline
