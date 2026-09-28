@@ -1,0 +1,238 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = "my-java-app"
+        AWS_REGION = "ap-south-1"
+        ECR_REGISTRY = "account-id.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        DOCKER_IMAGE = "${ECR_REGISTRY}/${APP_NAME}-dev:${BUILD_NUMBER}"
+        HELM_REPO_DIR = "helm-repo"
+        HELM_VALUES_FILE = "${HELM_REPO_DIR}/values-dev.yaml"
+        MAVEN_OPTS = "-Dmaven.repo.local=${WORKSPACE}/.m2/repository"
+    }
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+    }
+
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref', value: '$.ref'],
+                [key: 'before', value: '$.before'],
+                [key: 'after', value: '$.after'],
+                [key: 'repository', value: '$.repository.full_name'],
+                [key: 'pusher', value: '$.pusher.name'],
+                [key: 'pull_request', value: '$.pull_request.number'],
+                [key: 'action', value: '$.action'],
+                [key: 'head_sha', value: '$.pull_request.head.sha'],
+                [key: 'base_ref', value: '$.pull_request.base.ref']
+            ],
+            causeString: 'Triggered by PR #${pull_request}',
+            token: 'jenkins-pr-webhook-token',
+            printContributedVariables: true,
+            printPostContent: true,
+            silentResponse: false,
+            regexpFilterText: '$ref',
+            regexpFilterExpression: 'refs/pull/.*',
+            tokenCredentialId: 'github-webhook-token'
+        )
+    }
+
+    stages {
+        stage('Validate PR') {
+            when {
+                expression { return env.action == 'opened' || env.action == 'synchronize' }
+            }
+            steps {
+                script {
+                    // Check if PR title follows convention
+                    def prTitle = sh(script: "curl -s -H 'Authorization: token ${env.GIT_TOKEN}' https://api.github.com/repos/your-org/your-repo/pulls/${env.pull_request} | jq -r '.title'", returnStdout: true).trim()
+                    if (!prTitle.matches('^(feat|fix|docs|style|refactor|test|chore)(\\(.+\\))?: .+')) {
+                        error "PR title does not follow conventional commit format"
+                    }
+
+                    // Check if PR has required labels
+                    def prLabels = sh(script: "curl -s -H 'Authorization: token ${env.GIT_TOKEN}' https://api.github.com/repos/your-org/your-repo/pulls/${env.pull_request} | jq -r '.labels[].name'", returnStdout: true).trim()
+                    if (!prLabels.contains('ready-for-review')) {
+                        error "PR must have 'ready-for-review' label"
+                    }
+
+                    // Check if PR is targeting the correct branch
+                    if (env.base_ref != 'develop') {
+                        error "PR must target the 'develop' branch"
+                    }
+                }
+            }
+        }
+
+        stage('Load Secrets from AWS') {
+            steps {
+                script {
+                    try {
+                        githubSecret = getSecret('/ci/github')
+                        nexusSecret = getSecret('/ci/nexus')
+                        sonarSecret = getSecret('/ci/sonarqube')
+
+                        def githubCreds = readJSON text: githubSecret
+                        env.GIT_USER = githubCreds.username
+                        env.GIT_TOKEN = githubCreds.token
+
+                        def nexusCreds = readJSON text: nexusSecret
+                        env.NEXUS_USER = nexusCreds.username
+                        env.NEXUS_PASS = nexusCreds.password
+
+                        def sonarCreds = readJSON text: sonarSecret
+                        env.SONAR_TOKEN = sonarCreds.token
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Failed to load secrets: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        stage('Checkout PR Code') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: env.head_sha]],
+                    userRemoteConfigs: [[
+                        url: "https://github.com/${env.GIT_USER}:${env.GIT_TOKEN}@github.com/your-org/your-repo.git"
+                    ]]
+                ])
+            }
+        }
+
+        stage('Build and Test') {
+            parallel {
+                stage('Maven Build and Unit Test') {
+                    steps {
+                        sh 'mvn clean verify -Dmaven.test.failure.ignore=true'
+                    }
+                }
+                
+                stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv('SonarQube') {
+                            sh """
+                            mvn sonar:sonar \
+                                -Dsonar.projectKey=${APP_NAME}-dev \
+                                -Dsonar.login=${env.SONAR_TOKEN} \
+                                -Dsonar.pullrequest.key=${env.pull_request} \
+                                -Dsonar.pullrequest.branch=${env.head_sha} \
+                                -Dsonar.pullrequest.base=develop
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Publish Test Reports') {
+            steps {
+                junit '**/target/surefire-reports/*.xml'
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target/site/jacoco',
+                    reportFiles: 'index.html',
+                    reportName: 'JaCoCo Coverage Report'
+                ])
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    try {
+                        sh "docker build --cache-from ${DOCKER_IMAGE} -t ${DOCKER_IMAGE} ."
+                        sh "trivy image --exit-code 1 --severity CRITICAL,HIGH ${DOCKER_IMAGE}"
+                        sh """
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        docker push ${DOCKER_IMAGE}
+                        """
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Docker build/push failed: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Dev') {
+            steps {
+                script {
+                    try {
+                        sh """
+                        git clone https://${env.GIT_USER}:${env.GIT_TOKEN}@github.com/your-org/your-helm-repo.git ${HELM_REPO_DIR}
+                        sed -i 's|tag:.*|tag: "${BUILD_NUMBER}"|' ${HELM_VALUES_FILE}
+                        cd ${HELM_REPO_DIR}
+                        git config user.email "jenkins@company.com"
+                        git config user.name "Jenkins"
+                        git add ${HELM_VALUES_FILE}
+                        git commit -m "Update dev image tag to ${BUILD_NUMBER} for PR #${env.pull_request}"
+                        git push origin develop
+                        """
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Deployment failed: ${e.message}"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+            script {
+                def status = currentBuild.currentResult
+                def message = """
+                    Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                    Status: ${status}
+                    Environment: Development
+                    PR: #${env.pull_request}
+                    More info: ${env.BUILD_URL}
+                """
+                
+                // Update PR status on GitHub
+                def state = status == 'SUCCESS' ? 'success' : 'failure'
+                sh """
+                    curl -X POST -H "Authorization: token ${env.GIT_TOKEN}" \
+                    -H "Content-Type: application/json" \
+                    -d '{"state": "${state}", "context": "Jenkins PR Build", "description": "Build ${status}", "target_url": "${env.BUILD_URL}"}' \
+                    https://api.github.com/repos/your-org/your-repo/statuses/${env.head_sha}
+                """
+                
+                if (status == 'FAILURE') {
+                    emailext (
+                        subject: "Dev Pipeline Failed for PR #${env.pull_request}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: message,
+                        to: 'dev-team@company.com'
+                    )
+                }
+            }
+        }
+        success {
+            echo 'Dev Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Dev Pipeline failed!'
+        }
+        unstable {
+            echo 'Dev Pipeline is unstable!'
+        }
+    }
+}
+
+// Helper Function to load AWS Secrets
+def getSecret(secretName) {
+    return sh (
+        script: "aws secretsmanager get-secret-value --region ${AWS_REGION} --secret-id ${secretName} --query SecretString --output text",
+        returnStdout: true
+    ).trim()
+} 

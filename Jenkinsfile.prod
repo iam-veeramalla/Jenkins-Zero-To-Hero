@@ -1,0 +1,173 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = "my-java-app"
+        AWS_REGION = "ap-south-1"
+        ECR_REGISTRY = "account-id.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        DOCKER_IMAGE = "${ECR_REGISTRY}/${APP_NAME}-prod:${BUILD_NUMBER}"
+        HELM_REPO_DIR = "helm-repo"
+        HELM_VALUES_FILE = "${HELM_REPO_DIR}/values-prod.yaml"
+        MAVEN_OPTS = "-Dmaven.repo.local=${WORKSPACE}/.m2/repository"
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+    }
+
+    stages {
+        stage('Load Secrets from AWS') {
+            steps {
+                script {
+                    try {
+                        githubSecret = getSecret('/ci/github')
+                        nexusSecret = getSecret('/ci/nexus')
+                        sonarSecret = getSecret('/ci/sonarqube')
+
+                        def githubCreds = readJSON text: githubSecret
+                        env.GIT_USER = githubCreds.username
+                        env.GIT_TOKEN = githubCreds.token
+
+                        def nexusCreds = readJSON text: nexusSecret
+                        env.NEXUS_USER = nexusCreds.username
+                        env.NEXUS_PASS = nexusCreds.password
+
+                        def sonarCreds = readJSON text: sonarSecret
+                        env.SONAR_TOKEN = sonarCreds.token
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Failed to load secrets: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: "*/main"]],
+                        userRemoteConfigs: [[
+                            url: "https://github.com/your-org/your-repo.git",
+                            credentialsId: 'github-credentials'
+                        ]]
+                    ])
+                }
+            }
+        }
+
+        stage('Build and Test') {
+            parallel {
+                stage('Maven Build and Unit Test') {
+                    steps {
+                        sh 'mvn clean verify -Dmaven.test.failure.ignore=true'
+                    }
+                }
+                stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv('SonarQube') {
+                            sh "mvn sonar:sonar -Dsonar.projectKey=${APP_NAME}-prod -Dsonar.login=${env.SONAR_TOKEN}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Publish Test Reports') {
+            steps {
+                junit '**/target/surefire-reports/*.xml'
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target/site/jacoco',
+                    reportFiles: 'index.html',
+                    reportName: 'JaCoCo Coverage Report'
+                ])
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    try {
+                        sh "docker build --cache-from ${DOCKER_IMAGE} -t ${DOCKER_IMAGE} ."
+                        sh "trivy image --exit-code 1 --severity CRITICAL,HIGH ${DOCKER_IMAGE}"
+                        sh """
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        docker push ${DOCKER_IMAGE}
+                        """
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Docker build/push failed: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                script {
+                    try {
+                        sh """
+                        git clone https://${env.GIT_USER}:${env.GIT_TOKEN}@github.com/your-org/your-helm-repo.git ${HELM_REPO_DIR}
+                        sed -i 's|tag:.*|tag: "${BUILD_NUMBER}"|' ${HELM_VALUES_FILE}
+                        cd ${HELM_REPO_DIR}
+                        git config user.email "jenkins@company.com"
+                        git config user.name "Jenkins"
+                        git add ${HELM_VALUES_FILE}
+                        git commit -m "Update production image tag to ${BUILD_NUMBER}"
+                        git push origin main
+                        """
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Deployment failed: ${e.message}"
+                    }
+                }
+            }
+        }
+    }  // ✅ closes stages
+
+    post {
+        always {
+            cleanWs()
+            script {
+                def status = currentBuild.currentResult
+                def message = """
+                    Build: ${env.JOB_NAME} #${env.BUILD_NUMBER}
+                    Status: ${status}
+                    Environment: Production
+                    Branch: main
+                    More info: ${env.BUILD_URL}
+                """
+                if (status == 'FAILURE') {
+                    emailext (
+                        subject: "Production Pipeline Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        body: message,
+                        to: 'ops-team@company.com'
+                    )
+                }
+            }
+        }
+        success {
+            echo 'Production Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Production Pipeline failed!'
+        }
+        unstable {
+            echo 'Production Pipeline is unstable!'
+        }
+    }
+}
+
+// Helper Function to load AWS Secrets
+def getSecret(secretName) {
+    return sh (
+        script: "aws secretsmanager get-secret-value --region ${AWS_REGION} --secret-id ${secretName} --query SecretString --output text",
+        returnStdout: true
+    ).trim()
+}
