@@ -1,6 +1,3 @@
-<!-- pom.xml is similiar to requirements.txt in python has all the dependencies  -->
-<!-- so when you do mvn clean package it will download all this pacakges n dependencies and help java build the application  -->
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
