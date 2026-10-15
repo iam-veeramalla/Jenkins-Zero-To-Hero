@@ -5,7 +5,7 @@ metadata:                    #metadata is literal name of the Deployment object 
   labels:                    #labels (app: spring-boot-app) is attached to the Deployment itself, not the Pods. Why label it? For organization.
     app: spring-boot-app
 spec:
-  replicas: 2
+  replicas: 3
   selector:                      #The selector in a Deployment is strictly for the internal manager to count the Pods and keep the replica math correct.     
     matchLabels:
       app: spring-boot-app
