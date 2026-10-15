@@ -12,6 +12,15 @@ pipeline {
         //git branch: 'main', url: 'https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero.git'
       }
     }
+   
+  stage('Check Java and Maven') {
+    steps {
+        sh 'java -version'
+        sh 'mvn -version'
+        sh 'docker --version'
+     }
+   }
+
     stage('Build and Test') {
       steps {
         // sh 'ls -ltr'
