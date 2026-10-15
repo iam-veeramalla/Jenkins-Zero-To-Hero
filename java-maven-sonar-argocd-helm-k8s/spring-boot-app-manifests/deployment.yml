@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
+metadata:                    #metadata is literal name of the Deployment object inside your Kubernetes cluster. open your terminal and type kubectl get deployments, this is the name that will print out on your screen.
   name: spring-boot-app
-  labels:
+  labels:                    #labels (app: spring-boot-app) is attached to the Deployment itself, not the Pods. Why label it? For organization.
     app: spring-boot-app
 spec:
   replicas: 2
-  selector:
+  selector:                      #The selector in a Deployment is strictly for the internal manager to count the Pods and keep the replica math correct.     
     matchLabels:
       app: spring-boot-app
-  template:
+  template:                          #The template block is the literal blueprint for the Pods (the pop-up kitchens) that Kubernetes is going to spin up.
     metadata:
       labels:
         app: spring-boot-app
     spec:
       containers:
       - name: spring-boot-app
-        image: abhishekf5/ultimate-cicd:replaceImageTag
+        image: nikhilb619/spring-boot-cicd:23
         ports:
         - containerPort: 8080

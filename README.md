@@ -1,136 +1,165 @@
-# Jenkins-Zero-To-Hero
+# Spring Boot CI/CD with Jenkins, Docker, SonarQube, Kubernetes, and Argo CD
 
-Are you looking forward to learn Jenkins right from Zero(installation) to Hero(Build end to end pipelines)? then you are at the right place. 
+## 1. Project Overview
 
-## Installation on EC2 Instance
+Built a CI/CD workflow for a Spring Boot application. Jenkins builds and analyzes the code, creates a Docker image, pushes it to Docker Hub, updates the Kubernetes deployment manifest in GitHub, and Argo CD syncs the desired configuration to Kubernetes.
 
-YouTube Video ->
-https://www.youtube.com/watch?v=zZfhAXfBvVA&list=RDCMUCnnQ3ybuyFdzvgv2Ky5jnAA&index=1
+### Tools Used
 
+- **Jenkins** — automates the pipeline
+- **Maven** — builds the Spring Boot application 
+- **SonarQube** — analyzes code quality
+- **Docker** — packages the application into a container image
+- **Docker Hub** — stores container images
+- **GitHub** — stores application code and Kubernetes manifests
+- **Kubernetes** — runs the application using Deployments, ReplicaSets, and Pods
+- **Argo CD** — syncs Kubernetes configuration from GitHub using GitOps
 
-![Screenshot 2023-02-01 at 5 46 14 PM](https://user-images.githubusercontent.com/43399466/216040281-6c8b89c3-8c22-4620-ad1c-8edd78eb31ae.png)
+## 2. End-to-End CI/CD architecture flowchart
 
-Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
-
-## AWS EC2 Instance
-
-- Go to AWS Console
-- Instances(running)
-- Launch instances
-
-<img width="994" alt="Screenshot 2023-02-01 at 12 37 45 PM" src="https://user-images.githubusercontent.com/43399466/215974891-196abfe9-ace0-407b-abd2-adcffe218e3f.png">
-
-### Install Jenkins.
-
-Pre-Requisites:
- - Java (JDK)
-
-### Run the below commands to install Java and Jenkins
-
-Install Java
-
-```
-sudo apt update
-sudo apt install openjdk-17-jre
-```
-
-Verify Java is Installed
-
-```
-java -version
-```
-
-Now, you can proceed with installing Jenkins
-
-```
-curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update
-sudo apt-get install jenkins
-```
-
-**Note: ** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as show below.
-
-- EC2 > Instances > Click on <Instance-ID>
-- In the bottom tabs -> Click on Security
-- Security groups
-- Add inbound traffic rules as shown in the image (you can just allow TCP 8080 as well, in my case, I allowed `All traffic`).
-
-<img width="1187" alt="Screenshot 2023-02-01 at 12 42 01 PM" src="https://user-images.githubusercontent.com/43399466/215975712-2fc569cb-9d76-49b4-9345-d8b62187aa22.png">
-
-
-### Login to Jenkins using the below URL:
-
-http://<ec2-instance-public-ip-address>:8080    [You can get the ec2-instance-public-ip-address from your AWS EC2 console page]
-
-Note: If you are not interested in allowing `All Traffic` to your EC2 instance
-      1. Delete the inbound traffic rule for your instance
-      2. Edit the inbound traffic rule to only allow custom TCP port `8080`
-  
-After you login to Jenkins, 
-      - Run the command to copy the Jenkins Admin Password - `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
-      - Enter the Administrator password
-      
-<img width="1291" alt="Screenshot 2023-02-01 at 10 56 25 AM" src="https://user-images.githubusercontent.com/43399466/215959008-3ebca431-1f14-4d81-9f12-6bb232bfbee3.png">
-
-### Click on Install suggested plugins
-
-<img width="1291" alt="Screenshot 2023-02-01 at 10 58 40 AM" src="https://user-images.githubusercontent.com/43399466/215959294-047eadef-7e64-4795-bd3b-b1efb0375988.png">
-
-Wait for the Jenkins to Install suggested plugins
-
-<img width="1291" alt="Screenshot 2023-02-01 at 10 59 31 AM" src="https://user-images.githubusercontent.com/43399466/215959398-344b5721-28ec-47a5-8908-b698e435608d.png">
-
-Create First Admin User or Skip the step [If you want to use this Jenkins instance for future use-cases as well, better to create admin user]
-
-<img width="990" alt="Screenshot 2023-02-01 at 11 02 09 AM" src="https://user-images.githubusercontent.com/43399466/215959757-403246c8-e739-4103-9265-6bdab418013e.png">
-
-Jenkins Installation is Successful. You can now starting using the Jenkins 
-
-<img width="990" alt="Screenshot 2023-02-01 at 11 14 13 AM" src="https://user-images.githubusercontent.com/43399466/215961440-3f13f82b-61a2-4117-88bc-0da265a67fa7.png">
-
-## Install the Docker Pipeline plugin in Jenkins:
-
-   - Log in to Jenkins.
-   - Go to Manage Jenkins > Manage Plugins.
-   - In the Available tab, search for "Docker Pipeline".
-   - Select the plugin and click the Install button.
-   - Restart Jenkins after the plugin is installed.
-   
-<img width="1392" alt="Screenshot 2023-02-01 at 12 17 02 PM" src="https://user-images.githubusercontent.com/43399466/215973898-7c366525-15db-4876-bd71-49522ecb267d.png">
-
-Wait for the Jenkins to be restarted.
-
-
-## Docker Slave Configuration
-
-Run the below command to Install Docker
-
-```
-sudo apt update
-sudo apt install docker.io
-```
+<img width="1321" height="659" alt="228301952-abc02ca2-9942-4a67-8293-f76647b6f9d8" src="https://github.com/user-attachments/assets/3ae3d481-fc5d-4309-aebd-d208d122f5b0" />
  
-### Grant Jenkins user and Ubuntu user permission to docker deamon.
+**Important:** Jenkins builds and publishes the image. Argo CD deploys the Kubernetes configuration from GitHub. Argo CD does not build the Docker image.
 
+## 3. Step-by-Step Implementation
+
+### Step 1 — Prepare the application and GitHub repository
+
+- Stored the Spring Boot application, `pom.xml`, application `Dockerfile`, and Jenkins pipeline file in GitHub.
+- Kept Kubernetes manifests in a separate directory:
+  `java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/`.
+- Used Git to version-control application code and deployment configuration.
+
+### Step 2 — Configure Jenkins
+
+- Created a Jenkins pipeline job connected to the GitHub repository.
+- Configured credentials for SonarQube, Docker Hub, and GitHub.
+- Used a Docker-based Jenkins agent containing Java and Maven tools.
+- Mounted `/var/run/docker.sock` into the agent so its Docker CLI could communicate with the Docker daemon on the EC2 host.
+
+### Step 3 — Build the application with Maven
+
+- Ran Maven from the Spring Boot application directory.
+- Verified that the application compiled successfully before continuing the pipeline.
+
+### Step 4 — Run SonarQube analysis
+
+- Set up SonarQube on the EC2 host.
+- Added the SonarQube token to Jenkins credentials.
+- Configured the pipeline to run the Maven SonarQube scanner.
+- Verified successful scanner execution in the Jenkins build log.
+
+### Step 5 — Build and push the Docker image
+
+- Used the application Dockerfile to package the compiled Spring Boot JAR into a container image.
+- Tagged each image using the Jenkins build number, for example:
+  `nikhilb619/spring-boot-cicd:23`.
+- Authenticated to Docker Hub using a Jenkins credential and pushed the image to the repository.
+
+**Note:** The application Dockerfile and Jenkins agent image serve different purposes:
+- The **application image** contains the Spring Boot JAR and Java runtime.
+- The **Jenkins agent image** provides tools such as Java, Maven, and the Docker CLI used by the pipeline.
+
+### Step 6 — Update the Kubernetes deployment manifest
+
+- Updated `spring-boot-app-manifests/deployment.yml` with the image repository and build-specific tag.
+- Configured the pipeline to commit and push the updated manifest to GitHub.
+- Used Git credentials stored in Jenkins rather than hard-coding a personal access token in the repository.
+
+Example image reference:
+
+```yaml
+image: nikhilb619/spring-boot-cicd:23
 ```
-sudo su - 
-usermod -aG docker jenkins
-usermod -aG docker ubuntu
-systemctl restart docker
+
+### Step 7 — Configure Argo CD
+
+- Used an Argo CD instance managed by the Argo CD Operator.
+- Created an Argo CD `Application` pointing to the GitHub repository and Kubernetes manifest path.
+- Enabled automated synchronization.
+- Confirmed the application reported **Synced** and **Healthy** in the Argo CD UI.
+
+### Step 8 — Verify the Kubernetes deployment
+
+- Verified the `spring-boot-app` Deployment and its Pods.
+- Observed the relationship:
+  `Deployment → ReplicaSet → Pods`.
+- Confirmed that the desired replica count matched the running Pods.
+- Tested GitOps by changing the replica count in GitHub and checking that Argo CD synchronized the change to Kubernetes.
+
+## 4. Challenges and How They Were Resolved
+
+### Challenge 1 — Docker CLI and daemon API mismatch
+
+**Problem:** The Docker CLI inside the Jenkins agent was version `20.10.21` (API `1.41`), while the EC2 Docker daemon required API `1.44` or newer.
+
+**Resolution:** Identified that the outdated CLI was inside the agent container, not the host installation. Prepared a separate custom Jenkins agent image with a newer Docker CLI.
+
+**What this demonstrates:** Troubleshooting containerized build environments and understanding the difference between a Docker CLI and the Docker daemon.
+
+### Challenge 2 — Docker Hub image naming and push permissions
+
+**Problem:** Incorrect image naming caused Docker to interpret the username and repository incorrectly. A push also failed with `insufficient_scope`.
+
+**Resolution:** Corrected the image naming format to `username/repository:tag`, checked the Docker Hub repository, and verified that the Jenkins credential used a Docker Hub access token with write permission.
+
+**What this demonstrates:** Container image tagging, registry authentication, and credential troubleshooting.
+
+### Challenge 3 — Git commit failed because there were no changes
+
+**Problem:** The pipeline tried to commit a deployment manifest after the placeholder had already been replaced, so Git reported that there was nothing to commit. Some runs also checked out a detached or older commit.
+
+**Resolution:** Updated the manifest logic to replace the current image tag and added a check to commit only when staged changes exist. The checkout behavior should also be kept consistent with the latest `main` branch to avoid stale commits.
+
+**What this demonstrates:** Git state management and making CI/CD stages more reliable and repeatable.
+
+
+## 5. Key Concepts Learned
+
+- CI/CD pipeline stages and Jenkins credentials
+- Maven build lifecycle and SonarQube code analysis
+- Docker image creation, tagging, and registry pushes
+- Kubernetes Deployments, ReplicaSets, and Pods
+- GitOps and Argo CD automatic synchronization
+- Updating deployment configuration through Git
+- Debugging Docker API compatibility, registry authentication, and Git commit failures
+
+## 6. Proof of Implementation
+
+Screenshots below show the successful Jenkins pipeline, Argo CD application health/sync status, the EC2 instance running Jenkins, and the overall workflow diagram.
+
+### Jenkins pipeline — successful build
+
+<img width="1369" height="701" alt="Screenshot From 2026-10-15 21-58-22" src="https://github.com/user-attachments/assets/e208d88f-9983-429f-a09b-5165c6d8e592" />
+
+
+### Argo CD — application healthy and synced
+
+<img width="1268" height="626" alt="Screenshot From 2026-10-15 22-14-11" src="https://github.com/user-attachments/assets/11269915-d40d-4911-aee9-b06fafdedd07" />
+
+### EC2 — Jenkins instance running
+
+<img width="1268" height="516" alt="Screenshot From 2026-10-15 22-24-39" src="https://github.com/user-attachments/assets/7383860d-7ffc-4b52-bb9f-646d6d2a3a39" />
+
+### Final Workflow
+
+```mermaid
+flowchart TD
+    A[Developer pushes code to GitHub] --> B[Jenkins pipeline]
+    B --> C[Maven build and tests]
+    C --> D[SonarQube code analysis]
+    D --> E{Checks successful?}
+    E -- No --> F[Stop pipeline and report failure]
+    E -- Yes --> G[Build Docker image]
+    G --> H[Push versioned image to Docker Hub]
+    H --> I[Update image tag in Kubernetes manifest]
+    I --> J[Commit and push manifest to GitHub]
+    J --> K[Argo CD detects Git change]
+    K --> L[Argo CD syncs desired state]
+    L --> M[Kubernetes Deployment]
+    M --> N[ReplicaSet manages Pods]
 ```
 
-Once you are done with the above steps, it is better to restart Jenkins.
+## 7. Final Outcome
 
-```
-http://<ec2-instance-public-ip>:8080/restart
-```
-
-The docker agent configuration is now successful.
-
-
-
-
+Implemented and verified a workflow in which Jenkins builds and analyzes the Spring Boot application, publishes a versioned Docker image, and updates the Kubernetes manifest in GitHub. Argo CD detects the Git change and synchronizes the desired configuration to Kubernetes, where the Deployment manages the application Pods.
