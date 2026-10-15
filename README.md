@@ -130,16 +130,16 @@ Screenshots below show the successful Jenkins pipeline, Argo CD application heal
 
 ### Jenkins pipeline — successful build
 
-<img width="1669" height="851" alt="Screenshot From 2026-10-15 21-58-22" src="https://github.com/user-attachments/assets/e208d88f-9983-429f-a09b-5165c6d8e592" />
+<img width="1369" height="701" alt="Screenshot From 2026-10-15 21-58-22" src="https://github.com/user-attachments/assets/e208d88f-9983-429f-a09b-5165c6d8e592" />
 
 
 ### Argo CD — application healthy and synced
 
-<img width="1568" height="706" alt="Screenshot From 2026-10-15 22-14-11" src="https://github.com/user-attachments/assets/11269915-d40d-4911-aee9-b06fafdedd07" />
+<img width="1268" height="626" alt="Screenshot From 2026-10-15 22-14-11" src="https://github.com/user-attachments/assets/11269915-d40d-4911-aee9-b06fafdedd07" />
 
 ### EC2 — Jenkins instance running
 
-<img width="1568" height="616" alt="Screenshot From 2026-10-15 22-24-39" src="https://github.com/user-attachments/assets/7383860d-7ffc-4b52-bb9f-646d6d2a3a39" />
+<img width="1268" height="516" alt="Screenshot From 2026-10-15 22-24-39" src="https://github.com/user-attachments/assets/7383860d-7ffc-4b52-bb9f-646d6d2a3a39" />
 
 ### Final Workflow
 
