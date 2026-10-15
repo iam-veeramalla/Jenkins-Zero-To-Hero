@@ -7,7 +7,7 @@ Built a CI/CD workflow for a Spring Boot application. Jenkins builds and analyze
 ### Tools Used
 
 - **Jenkins** — automates the pipeline
-- **Maven** — builds the Spring Boot application
+- **Maven** — builds the Spring Boot application 
 - **SonarQube** — analyzes code quality
 - **Docker** — packages the application into a container image
 - **Docker Hub** — stores container images
