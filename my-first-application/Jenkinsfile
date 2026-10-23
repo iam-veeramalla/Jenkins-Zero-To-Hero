@@ -10,7 +10,7 @@ pipeline {
             }
 
             steps {
-                dir('backend') {
+                dir('my-first-application/backend') {
                     echo 'Building Java application with Maven'
                     sh 'mvn -B clean package'
 
