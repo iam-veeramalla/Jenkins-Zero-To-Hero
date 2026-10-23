@@ -28,7 +28,7 @@ pipeline {
             }
 
             steps {
-                dir('frontend') {
+                dir('my-first-application/frontend') {
                     echo 'Checking Node.js version'
                     sh 'node --version'
 
