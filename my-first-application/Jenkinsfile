@@ -38,44 +38,4 @@ pipeline {
             }
         }
     }
-}pipeline {
-    agent none
-
-    stages {
-        stage('Back-end - Java') {
-            agent {
-                docker {
-                    image 'maven:3.9-eclipse-temurin-17'
-                }
-            }
-
-            steps {
-                dir('backend') {
-                    echo 'Building Java application with Maven'
-                    sh 'mvn -B clean package'
-
-                    echo 'Running Java Hello World application'
-                    sh 'java -cp target/classes com.example.HelloWorld'
-                }
-            }
-        }
-
-        stage('Front-end - Node.js') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                }
-            }
-
-            steps {
-                dir('frontend') {
-                    echo 'Checking Node.js version'
-                    sh 'node --version'
-
-                    echo 'Running Node.js Hello World application'
-                    sh 'node hello.js'
-                }
-            }
-        }
-    }
 }
